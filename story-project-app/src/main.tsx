@@ -1,10 +1,58 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import Library from "./Library";
+import "./Main.css";
+import Menu from "./Menu";
+import StaticContent from "./StaticContent";
+import StoryContent from "./StoryContent";
+import { pages, stories } from "./mockData";
+import { useState } from "react";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+function Main() {
+  const [currentStory, setCurrentStory] = useState("");
+  const [currentChapter, setCurrentChapter] = useState(0);
+  const onStoryChange = (newStory: string) => {
+    setCurrentStory(newStory);
+    setCurrentChapter(0);
+    setCurrentPage("");
+    setOnStoryContent(true);
+  };
+  const [currentPage, setCurrentPage] = useState("Home");
+  const [onStoryContent, setOnStoryContent] = useState(false);
+  const onMenuChange = (newPage: string) => {
+    setCurrentPage(newPage);
+    setCurrentChapter(0);
+    setCurrentStory("");
+    setOnStoryContent(false);
+  };
+
+  return (
+    <main>
+      <div className="sidebar">
+        <Menu
+          pages={pages}
+          currentPage={currentPage}
+          onClickMenu={onMenuChange}
+        />
+        <Library
+          stories={stories}
+          selectedStoryId={currentStory}
+          onClickStory={onStoryChange}
+        />
+      </div>
+      {onStoryContent ? (
+        <StoryContent
+          // Filter instead of find here, because find can return undefined.
+          story={stories.filter((story) => story.id === currentStory)[0]}
+          currentChapter={currentChapter}
+          setCurrentChapter={setCurrentChapter}
+        />
+      ) : (
+        <StaticContent
+          title={pages.filter((page) => page.title === currentPage)[0].title}
+          text={pages.filter((page) => page.title === currentPage)[0].text}
+        />
+      )}
+    </main>
+  );
+}
+
+export default Main;

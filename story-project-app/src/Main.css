@@ -1,0 +1,22 @@
+main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+}
+@media only screen and (min-width: 768px) {
+  .sidebar { min-width: 18em; max-width: 22em; width: fit-content; }
+  main {flex-wrap: nowrap;}
+}
+.sidebar {
+  width: 100%;
+  border-right: 1px solid #FFF2;
+  /* background-color: #FFF1; */
+}
+.box-button {
+  background-color: #FFF0;
+  transition: background-color 0.1s;
+}
+.box-button:hover {
+  background-color: #FFF1;
+}

@@ -1,0 +1,58 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 2;
+  padding: 1em 2em 2em 2em;
+  max-width: 60em;
+  margin: 0 auto;
+}
+.content-title {
+  text-align: center;
+  font-size: 24pt;
+}
+.chapter-select {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1em;
+}
+.chapter-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+  background-color: #FFF1;
+  color: #FFF8;
+  font-size: 20pt;
+  font-weight: bold;
+  border-radius: 50%;
+  transition: background-color 0.2s,
+  color 0.2s;
+  user-select: none;
+}
+.selected-chapter {
+  border: 0.1em solid #FFF6;
+}
+.chapter-button:hover {
+  background-color: #FFF2;
+  color: #FFFF;
+}
+.content-body {
+  margin: 1em;
+}
+.content-body h3 {
+  text-align: center;
+  font-size: 24pt;
+}
+.content-body p {
+  font-size: 16pt;
+  text-align: justify;
+}
+.bottom-chapter-select {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: end;
+}
