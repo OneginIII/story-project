@@ -7,6 +7,9 @@
   max-width: 60em;
   margin: 0 auto;
 }
+.content-icon {
+  height: 20em;
+}
 .content-title {
   text-align: center;
   font-size: 24pt;

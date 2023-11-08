@@ -19,6 +19,10 @@ function Library(props: {
             }
             onClick={() => props.onClickStory(story.id)}
           >
+            <div
+              className="story-icon-bg"
+              style={{ backgroundImage: "url(" + story.icon + ")" }}
+            />
             <p>{story.title}</p>
           </div>
         );

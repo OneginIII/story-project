@@ -5,6 +5,7 @@ export interface Story {
   url: string;
   visible: boolean;
   dateCreated: Date;
+  icon: string;
 }
 export interface Chapter {
   title: string;
@@ -36,6 +37,7 @@ export const stories: Story[] = [
     url: "a-night-in-the-woods",
     visible: true,
     dateCreated: new Date(),
+    icon: "/icons/night-icon.svg",
   },
   {
     id: "40697844-edce-46cb-96c7-ccae49de3896",
@@ -77,6 +79,7 @@ export const stories: Story[] = [
     url: "forever-lost",
     visible: true,
     dateCreated: new Date(),
+    icon: "",
   },
   {
     id: "89aec177-ca77-44d5-830c-8a42a3ac19a5",
@@ -94,6 +97,7 @@ export const stories: Story[] = [
     url: "the-crimson-lady",
     visible: true,
     dateCreated: new Date(),
+    icon: "",
   },
   {
     id: "52ebb8be-2765-487d-809e-1b54fd63451b",
@@ -115,6 +119,7 @@ export const stories: Story[] = [
     url: "hidden-tales",
     visible: false,
     dateCreated: new Date(),
+    icon: "",
   },
 ];
 

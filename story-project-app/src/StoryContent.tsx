@@ -9,6 +9,9 @@ function StoryContent(props: {
 }) {
   return (
     <div className="content">
+      {props.story.icon !== "" && props.currentChapter === 0 && (
+        <img className="content-icon" src="/icons/night-icon.svg" />
+      )}
       <div className="content-title">
         <h2>{props.story?.title}</h2>
       </div>
