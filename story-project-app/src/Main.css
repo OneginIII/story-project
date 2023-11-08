@@ -5,7 +5,7 @@ main {
   flex-wrap: wrap;
 }
 @media only screen and (min-width: 768px) {
-  .sidebar { min-width: 18em; max-width: 22em; width: fit-content; }
+  .sidebar { min-width: 20em; max-width: 20em; }
   main {flex-wrap: nowrap;}
 }
 .sidebar {

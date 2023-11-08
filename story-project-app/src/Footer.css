@@ -1,5 +1,5 @@
 footer {
-  flex: 0 1 var(--footer-height);
+  flex: 0 1;
   min-height: var(--footer-height);
   text-align: center;
   /* background-color: #FFF2; */
