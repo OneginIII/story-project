@@ -3,10 +3,11 @@ import "./Main.css";
 import Menu from "./Menu";
 import StaticContent from "./StaticContent";
 import StoryContent from "./StoryContent";
+import StoryEdit from "./StoryEdit";
 import { pages, stories } from "./mockData";
 import { useState } from "react";
 
-function Main() {
+function Main(props: { onAdmin: boolean }) {
   const [currentStory, setCurrentStory] = useState("");
   const [currentChapter, setCurrentChapter] = useState(0);
   const onStoryChange = (newStory: string) => {
@@ -27,18 +28,23 @@ function Main() {
   return (
     <main>
       <div className="sidebar">
-        <Menu
-          pages={pages}
-          currentPage={currentPage}
-          onClickMenu={onMenuChange}
-        />
+        {!props.onAdmin && (
+          <Menu
+            pages={pages}
+            currentPage={currentPage}
+            onClickMenu={onMenuChange}
+          />
+        )}
         <Library
           stories={stories}
           selectedStoryId={currentStory}
           onClickStory={onStoryChange}
+          onAdmin={props.onAdmin}
         />
       </div>
-      {onStoryContent ? (
+      {props.onAdmin ? (
+        <StoryEdit />
+      ) : onStoryContent ? (
         <StoryContent
           // Filter instead of find here, because find can return undefined.
           story={stories.filter((story) => story.id === currentStory)[0]}

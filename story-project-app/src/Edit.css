@@ -1,0 +1,19 @@
+.edit {
+  margin: 0 auto;
+}
+
+.edit * {
+  margin-bottom: 1em;
+}
+
+.horizontal-buttons {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.edit input {
+  min-width: 18em;
+}
