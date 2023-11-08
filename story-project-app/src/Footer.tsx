@@ -1,10 +1,16 @@
 import "./Footer.css";
 
-function Footer() {
+function Footer(props: { onLogin: (on: boolean) => void; onAdmin: boolean }) {
   return (
     <footer>
       <p>
-        <a href="index.html">Log in</a>
+        {props.onAdmin ? (
+          <a href="#">Log out</a>
+        ) : (
+          <a href="#" onClick={() => props.onLogin(true)}>
+            Log in
+          </a>
+        )}
       </p>
       <p>|</p>
       <p>© 2023 Tero Salmela</p>
