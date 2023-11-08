@@ -1,0 +1,17 @@
+header {
+  flex: 0 1;
+  min-height: var(--header-height);
+  text-align: center;
+  /* background-color: #FFF2; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #FFF2;
+}
+h1 {
+  font-family: 'Estonia', cursive;
+  font-size: 80pt;
+  font-weight: normal;
+  margin: 0 0 20pt 0;
+  user-select: none;
+}

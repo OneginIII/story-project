@@ -1,0 +1,28 @@
+.story {
+  position: relative;
+  font-size: 16pt;
+  border-image: linear-gradient(90deg, #FFF1, #FFF2) 1;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  padding: 0 1em;
+  background-color: #FFF0;
+}
+.story-selected {
+  background: linear-gradient(90deg, #FFFFFF05, #FFFFFF0A);
+}
+.story p {
+  height: fit-content;
+  padding: 1em 0;
+  margin: 0;
+}
+.story-icon-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-position: 100% 50%;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  opacity: 0.25;
+}

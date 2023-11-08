@@ -1,0 +1,9 @@
+:root {
+  --header-height: 12em;
+  --footer-height: 6em;
+}
+.app {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}

@@ -1,0 +1,21 @@
+.menu {
+  display: flex;
+  align-items: center;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: #FFF1;
+}
+.menu .box {
+  flex: 1 1;
+  border-width: 0 1px;
+  border-style: solid;
+  border-color: #FFF1;
+  font-size: 16pt;
+  text-align: center;
+}
+.menu .box:last-child {
+  border-right-width: 0;
+}
+.menu-selected {
+  background: #FFFFFF0A;
+}
