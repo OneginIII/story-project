@@ -2,12 +2,15 @@ import { useState } from "react";
 import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
-import LoginModal from "./LoginModal";
 import Main from "./Main";
+import Modal from "./Modal";
+import "./Modal.css";
+import LoginModal from "./LoginModal";
 
 function App() {
   const [displayLogin, setDisplayLogin] = useState(false);
   const [adminMode, setAdminMode] = useState(false);
+
   return (
     <div className="app">
       <div style={{ position: "absolute", left: "1em", top: "1em" }}>
@@ -24,7 +27,9 @@ function App() {
       <Header onAdmin={adminMode} />
       <Main onAdmin={adminMode} />
       <Footer onLogin={setDisplayLogin} onAdmin={adminMode} />
-      {displayLogin && <LoginModal onClose={setDisplayLogin} />}
+      <Modal isOpen={displayLogin} onClose={() => setDisplayLogin(false)}>
+        <LoginModal onSubmit={(e) => e.preventDefault()} />
+      </Modal>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import DeleteModal from "./DeleteModal";
 import { Story } from "./mockData";
 import ChapterButton from "./ChapterButton";
 import "./Edit.css";
+import Modal from "./Modal";
 
 function ChapterEdit(props: {
   story: Story;
@@ -25,9 +26,9 @@ function ChapterEdit(props: {
 
   return (
     <>
-      <form className="edit">
-        {props.story !== undefined ? (
-          <>
+      {props.story !== undefined ? (
+        <>
+          <form onSubmit={(e) => e.preventDefault()} className="edit">
             <div
               style={{
                 display: "flex",
@@ -85,16 +86,19 @@ function ChapterEdit(props: {
               >
                 Delete chapter
               </button>
-              <button>Confirm edit</button>
+              <button type="submit">Confirm edit</button>
             </div>
-          </>
-        ) : (
-          <h2>Select a story</h2>
-        )}
-      </form>
-      {showDelete && (
-        <DeleteModal toDeleteText="chapter" onClose={setShowDelete} />
+          </form>
+        </>
+      ) : (
+        <h2>Select a story</h2>
       )}
+      <Modal isOpen={showDelete} onClose={() => setShowDelete(false)}>
+        <DeleteModal
+          toDeleteText="chapter"
+          onClose={() => setShowDelete(false)}
+        />
+      </Modal>
     </>
   );
 }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import DeleteModal from "./DeleteModal";
 import "./Edit.css";
 import { Story } from "./mockData";
+import Modal from "./Modal";
 
 function StoryEdit(props: {
   story: Story;
@@ -11,7 +12,7 @@ function StoryEdit(props: {
 
   return (
     <>
-      <form className="edit">
+      <form className="edit" onSubmit={(e) => e.preventDefault()}>
         <h2>Edit story</h2>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" defaultValue={props.story.title} />
@@ -28,12 +29,15 @@ function StoryEdit(props: {
           <button onClick={() => props.onChapterEdit(false)}>
             Back to chapter edit
           </button>
-          <button>Confirm edit</button>
+          <button type="submit">Confirm edit</button>
         </div>
       </form>
-      {showDelete && (
-        <DeleteModal toDeleteText="story" onClose={setShowDelete} />
-      )}
+      <Modal isOpen={showDelete} onClose={() => setShowDelete(false)}>
+        <DeleteModal
+          toDeleteText="story"
+          onClose={() => setShowDelete(false)}
+        />
+      </Modal>
     </>
   );
 }

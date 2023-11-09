@@ -5,10 +5,10 @@ function Footer(props: { onLogin: (on: boolean) => void; onAdmin: boolean }) {
     <footer>
       <p>
         {props.onAdmin ? (
-          <a href="#">Log out</a>
+          <a>Log out</a>
         ) : (
           <a
-            href="#"
+            className="link"
             onClick={() => {
               props.onLogin(true);
             }}
