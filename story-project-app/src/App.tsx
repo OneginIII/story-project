@@ -8,7 +8,6 @@ import Main from "./Main";
 function App() {
   const [displayLogin, setDisplayLogin] = useState(false);
   const [adminMode, setAdminMode] = useState(false);
-
   return (
     <div className="app">
       <div style={{ position: "absolute", left: "1em", top: "1em" }}>

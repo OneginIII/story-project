@@ -20,7 +20,7 @@ a {
   color: #E6E6E6;
 }
 
-label, button, input, input::file-selector-button {
+label, button, input, input::file-selector-button, textarea {
   font-size: 14pt;
   font-family: 'Crimson Text', serif;
   margin-left: 0.5em;
@@ -35,12 +35,17 @@ button, input::file-selector-button {
   padding: 0.5em 1em;
 }
 
+input {
+  width: calc(100% - 1em);
+}
+
 input[type="file"] {
-  direction: rtl;
+  direction: ltr;
 }
 
 input::file-selector-button {
-  margin-right: 0em;
+  margin-right: 1em;
+  margin-left: 0;
 }
 
 button:hover {

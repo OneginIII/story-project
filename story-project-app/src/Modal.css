@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
@@ -10,29 +10,29 @@
   background-color: #0006;
 }
 
-.login-modal {
+.modal-body {
   padding: 2em;
   background-color: #262626;
   border: 1px solid #FFF2;
 }
 
-.login-modal form * {
+.modal-body form * {
   display: flex;
   flex-direction: column;
   margin-bottom: 2em;
 }
 
-.login-modal form label {
+.modal-body form label {
   margin-bottom: 0;
 }
 
-.login-modal h3 {
+.modal-body h3 {
   font-size: 18pt;
   text-align: center;
   margin-top: 0;
   margin-bottom: 1em;
 }
 
-.login-modal button {
+.modal-body button {
   margin: 0 auto;
 }

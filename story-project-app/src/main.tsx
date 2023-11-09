@@ -1,9 +1,9 @@
+import Edit from "./Edit";
 import Library from "./Library";
 import "./Main.css";
 import Menu from "./Menu";
 import StaticContent from "./StaticContent";
 import StoryContent from "./StoryContent";
-import StoryEdit from "./StoryEdit";
 import { pages, stories } from "./mockData";
 import { useState } from "react";
 
@@ -43,7 +43,11 @@ function Main(props: { onAdmin: boolean }) {
         />
       </div>
       {props.onAdmin ? (
-        <StoryEdit />
+        <Edit
+          story={stories.filter((story) => story.id === currentStory)[0]}
+          currentChapter={currentChapter}
+          setCurrentChapter={setCurrentChapter}
+        />
       ) : onStoryContent ? (
         <StoryContent
           // Filter instead of find here, because find can return undefined.

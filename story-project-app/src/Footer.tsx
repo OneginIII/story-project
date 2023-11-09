@@ -7,7 +7,12 @@ function Footer(props: { onLogin: (on: boolean) => void; onAdmin: boolean }) {
         {props.onAdmin ? (
           <a href="#">Log out</a>
         ) : (
-          <a href="#" onClick={() => props.onLogin(true)}>
+          <a
+            href="#"
+            onClick={() => {
+              props.onLogin(true);
+            }}
+          >
             Log in
           </a>
         )}

@@ -1,9 +1,9 @@
-import "./LoginModal.css";
+import "./Modal.css";
 
 function LoginModal(props: { onClose: (on: boolean) => void }) {
   return (
     <div className="modal" onClick={() => props.onClose(false)}>
-      <div className="login-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-body" onClick={(e) => e.stopPropagation()}>
         <form>
           <label htmlFor="username">Username</label>
           <input name="username" id="username" type="text"></input>
