@@ -12,3 +12,8 @@ footer p {
   font-size: 12pt;
   margin: 0 0.5em;
 }
+
+.link {
+  text-decoration: underline;
+  cursor: pointer;
+}
