@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import ChapterButton from "./ChapterButton";
 import "./Content.css";
 import { Story } from "./mockData";
@@ -7,6 +8,27 @@ function StoryContent(props: {
   currentChapter: number;
   setCurrentChapter: (val: number) => void;
 }) {
+  // Keyboard navigation for story content.
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key == "ArrowLeft") {
+        if (props.currentChapter > 0) {
+          props.setCurrentChapter(props.currentChapter - 1);
+        }
+      } else if (event.key == "ArrowRight") {
+        if (props.currentChapter < props.story.chapters.length - 1) {
+          props.setCurrentChapter(props.currentChapter + 1);
+        }
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return function cleanup() {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  });
+
   return (
     <div className="content">
       {props.story.icon !== "" && props.currentChapter === 0 && (
