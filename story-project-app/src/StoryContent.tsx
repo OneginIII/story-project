@@ -12,9 +12,7 @@ function StoryContent(props: {
       {props.story.icon !== "" && props.currentChapter === 0 && (
         <img className="content-icon" src="/icons/night-icon.svg" />
       )}
-      <div className="content-title">
-        <h2>{props.story?.title}</h2>
-      </div>
+      <h2>{props.story?.title}</h2>
       <div className="chapter-select">
         {props.story?.chapters.map((_chapter, index) => {
           return (

@@ -5,9 +5,15 @@ function Library(props: {
   stories: Story[];
   selectedStoryId: string;
   onClickStory: (id: string) => void;
+  onAdmin: boolean;
 }) {
   return (
     <div className="library">
+      {props.onAdmin && (
+        <div className="story box-button">
+          <p style={{ fontStyle: "italic" }}>+ Add New Story</p>
+        </div>
+      )}
       {props.stories.map((story) => {
         return (
           <div

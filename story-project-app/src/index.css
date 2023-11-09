@@ -19,3 +19,45 @@ body {
 a {
   color: #E6E6E6;
 }
+
+label, button, input, input::file-selector-button, textarea {
+  font-size: 14pt;
+  font-family: 'Crimson Text', serif;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+button, input::file-selector-button {
+  background-color: #FFF0;
+  transition: background-color 0.1s;
+  border: 1px solid #FFF2;
+  color: #E6E6E6;
+  padding: 0.5em 1em;
+}
+
+input {
+  width: calc(100% - 1em);
+}
+
+input[type="file"] {
+  direction: ltr;
+}
+
+input::file-selector-button {
+  margin-right: 1em;
+  margin-left: 0;
+}
+
+button:hover {
+  background-color: #FFF1;
+}
+
+.btn-danger {
+  background-color: #FFF0;
+  border: 1px solid #F444;
+  color: #E63333;
+}
+
+.btn-danger:hover {
+  background-color: #F441;
+}

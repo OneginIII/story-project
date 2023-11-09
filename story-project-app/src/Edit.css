@@ -1,0 +1,18 @@
+.edit {
+  margin: 0 auto;
+}
+
+.edit * {
+  margin-bottom: 1em;
+}
+
+.edit input {
+  min-width: 18em;
+}
+
+.edit textarea {
+  width: 40em;
+  height: 30em;
+  margin-left: 0;
+  padding: 0.5em 1em;
+}

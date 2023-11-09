@@ -1,0 +1,38 @@
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #0006;
+}
+
+.modal-body {
+  padding: 2em;
+  background-color: #262626;
+  border: 1px solid #FFF2;
+}
+
+.modal-body form * {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2em;
+}
+
+.modal-body form label {
+  margin-bottom: 0;
+}
+
+.modal-body h3 {
+  font-size: 18pt;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.modal-body button {
+  margin: 0 auto;
+}
