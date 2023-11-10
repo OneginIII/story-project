@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import DeleteModal from "./DeleteModal";
-import { Story } from "./mockData";
-import ChapterButton from "./ChapterButton";
+import { Story } from "../../mockData";
+import ChapterButton from "../ChapterButton";
 import "./Edit.css";
-import Modal from "./Modal";
+import Modal from "../Modal";
 
 function ChapterEdit(props: {
   story: Story;

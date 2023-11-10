@@ -1,8 +1,8 @@
 import { useState } from "react";
 import DeleteModal from "./DeleteModal";
 import "./Edit.css";
-import { Story } from "./mockData";
-import Modal from "./Modal";
+import { Story } from "../../mockData";
+import Modal from "../Modal";
 
 function StoryEdit(props: {
   story: Story;
