@@ -1,10 +1,11 @@
+// DEPRECATED for now
+
 import { useState } from "react";
 import StoryEdit from "./StoryEdit";
 import ChapterEdit from "./ChapterEdit";
-import { Story } from "./mockData";
+import { Story } from "../../mockData";
 
 function Edit(props: {
-  currentChapter: number;
   story: Story;
   setCurrentChapter: (value: number) => void;
 }) {
@@ -16,10 +17,9 @@ function Edit(props: {
         <StoryEdit story={props.story} onChapterEdit={setEditStory} />
       ) : (
         <ChapterEdit
-          currentChapter={props.currentChapter}
           story={props.story}
           setCurrentChapter={props.setCurrentChapter}
-          onEditStory={setEditStory}
+          onEditStory={() => null}
         />
       )}
     </>

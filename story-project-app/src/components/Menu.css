@@ -12,10 +12,12 @@
   border-color: #FFF1;
   font-size: 16pt;
   text-align: center;
+  text-decoration: none;
+  padding: 1em;
 }
 .menu .box:last-child {
   border-right-width: 0;
 }
-.menu-selected {
+.box.active {
   background: #FFFFFF0A;
 }
