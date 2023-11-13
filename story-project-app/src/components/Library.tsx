@@ -20,9 +20,13 @@ function Library(props: { stories: Story[] }) {
       {props.stories.map((story) => {
         return (
           <NavLink
-            to={`/${story.url}/1`}
+            to={`/${story.url}/`}
             key={story.id}
-            className={"story box-button"}
+            className={
+              window.location.href.includes(story.url)
+                ? "story box-button active"
+                : "story box-button"
+            }
           >
             <div
               className="story-icon-bg"

@@ -3,13 +3,15 @@ import ChapterButton from "./ChapterButton";
 import "./Content.css";
 import { Story } from "../mockData";
 import { useParams } from "react-router-dom";
+import NotFound from "../NotFound";
 
 function StoryContent(props: {
   story: Story;
   setCurrentChapter: (val: number) => void;
 }) {
   const { chapter } = useParams();
-  const currentChapter = Number(chapter) - 1;
+  const currentChapter = Number(chapter) ? Number(chapter) - 1 : 0;
+  const isStringChapter = chapter && !Number(chapter);
 
   // Keyboard navigation for story content.
   useEffect(() => {
@@ -32,6 +34,10 @@ function StoryContent(props: {
     };
   });
 
+  if (!props.story.chapters[currentChapter] || isStringChapter) {
+    return <NotFound />;
+  }
+
   return (
     <div className="content">
       {props.story.icon !== "" && currentChapter === 0 && (
@@ -53,7 +59,7 @@ function StoryContent(props: {
       </div>
       <div className="content-body">
         <h3>
-          {/*Something (Prettier?) really wants to add that {" "} here for some reason.*/}
+          {/*Something (Prettier?) really wants to add that {" "} here for some reason. (Maybe end of line)*/}
           Chapter {currentChapter + 1} –{" "}
           {props.story?.chapters[currentChapter].title}
         </h3>
