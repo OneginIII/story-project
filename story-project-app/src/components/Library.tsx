@@ -11,8 +11,12 @@ function Library(props: { stories: Story[] }) {
       {admin && (
         <Link
           style={{ fontStyle: "italic" }}
-          to={"/new"}
-          className="story box-button"
+          to={"new"}
+          className={
+            window.location.href.includes("admin/new")
+              ? "story box-button active"
+              : "story box-button"
+          }
         >
           + Add New Story
         </Link>
@@ -20,7 +24,7 @@ function Library(props: { stories: Story[] }) {
       {props.stories.map((story) => {
         return (
           <NavLink
-            to={`/${story.url}/`}
+            to={`${story.url}/`}
             key={story.id}
             className={
               window.location.href.includes(story.url)

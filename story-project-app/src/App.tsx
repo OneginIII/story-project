@@ -6,8 +6,10 @@ import Main from "./components/Main";
 import Modal from "./components/Modal";
 import "./components/Modal.css";
 import LoginModal from "./components/LoginModal";
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const navigate = useNavigate();
   const [displayLogin, setDisplayLogin] = useState(false);
 
   return (
@@ -15,7 +17,7 @@ function App() {
       <Header />
       <Main />
       <Modal isOpen={displayLogin} onClose={() => setDisplayLogin(false)}>
-        <LoginModal onSubmit={(e) => e.preventDefault()} />
+        <LoginModal onSubmit={() => navigate("admin")} />
       </Modal>
       <Footer onLogin={setDisplayLogin} />
     </div>

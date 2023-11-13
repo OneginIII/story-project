@@ -53,3 +53,7 @@ h2 {
   width: 100%;
   justify-content: space-between;
 }
+
+.horizontal-buttons:has(button:only-child) {
+  justify-content: end;
+}
