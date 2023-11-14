@@ -1,15 +1,14 @@
 import express from "express";
+import cors from "cors";
 import { publicRouter } from "./publicRoutes";
+import "dotenv/config";
 
 const server = express();
-const port = 3000;
+const port = process.env.PORT;
 
+server.use(cors());
 server.use(express.json());
 server.use(publicRouter);
-
-server.get("/", (req, res) => {
-  res.send("Hello world!");
-});
 
 server.listen(port, () => {
   console.log("Server running on port " + port);
