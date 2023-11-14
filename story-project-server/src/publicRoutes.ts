@@ -1,18 +1,36 @@
 import express from "express";
-import { stories } from "./data";
+import { IStoryLink, stories } from "./data";
 import fs from "fs";
 import "dotenv/config";
 
 const router = express.Router();
 const staticPagesPath = String(process.env.STATIC_PAGE_LOCATION);
 
+// Stories
+
 router.get("/stories", (req, res) => {
-  res.send(JSON.stringify(stories));
+  res.send(
+    JSON.stringify(
+      stories.map(
+        (story) =>
+          <IStoryLink>{
+            title: story.title,
+            url: story.url,
+            icon: story.icon,
+          }
+      )
+    )
+  );
 });
 
 router.get("/story/:url", (req, res) => {
   const story = stories.find((story) => story.url === req.params.url);
   res.send(JSON.stringify(story));
+});
+
+router.get("/story/:url/icon", (req, res) => {
+  const story = stories.find((story) => story.url === req.params.url);
+  res.send(JSON.stringify(story?.icon));
 });
 
 router.get("/story/:url/:chapter", (req, res) => {

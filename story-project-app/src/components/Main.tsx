@@ -5,7 +5,6 @@ import "./Main.css";
 import Menu from "./Menu";
 import StaticContent from "./StaticContent";
 import StoryContent from "./StoryContent";
-import { stories } from "../mockData";
 import { AdminContext } from "../index";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import NotFound from "../NotFound";
@@ -15,13 +14,22 @@ import pageService from "../pageService";
 import Settings from "./Settings";
 import { homePage } from "../App";
 import Admin from "./Admin";
+import { IStoryLink } from "../types";
+import storyService from "../storyService";
 
 function Main() {
   const [pages, setPages] = useState<string[]>([]);
+  const [stories, setStories] = useState<IStoryLink[]>([]);
 
   useEffect(() => {
     pageService.getPageList().then((serverPages) => {
       setPages(serverPages.reverse().map((page: string) => page.split(".")[0]));
+    });
+  }, []);
+
+  useEffect(() => {
+    storyService.getStoryList().then((serverStories) => {
+      setStories(serverStories);
     });
   }, []);
 
@@ -37,58 +45,32 @@ function Main() {
       <Routes>
         {stories.map((story) => (
           // Have to use React.Fragment here to access key property.
-          <React.Fragment key={story.id}>
+          <React.Fragment key={story.url}>
             <Route path={`/${story.url}`}>
               <Route
                 path=":chapter?"
                 element={
                   admin ? (
-                    <ChapterEdit
-                      story={story}
-                      setCurrentChapter={(val: number) => {
-                        if (story.chapters[val]) {
-                          navigate(`${story.url}/` + String(val + 1));
-                        }
-                      }}
-                      onEditStory={() => navigate(`edit/${story.id}`)}
-                    />
+                    <ChapterEdit url={story.url} />
                   ) : (
-                    <StoryContent
-                      story={story}
-                      setCurrentChapter={(val: number) => {
-                        if (story.chapters[val]) {
-                          navigate(`${story.url}/` + String(val + 1));
-                        }
-                      }}
-                    />
+                    <StoryContent url={story.url} />
                   )
                 }
               />
               {admin && (
                 <Route
                   path="new"
-                  element={
-                    <ChapterEdit
-                      story={story}
-                      setCurrentChapter={(val: number) => {
-                        if (story.chapters[val]) {
-                          navigate(`${story.url}/` + String(val + 1));
-                        }
-                      }}
-                      onEditStory={() => navigate(`edit/${story.id}`)}
-                      new
-                    />
-                  }
+                  element={<ChapterEdit url={story.url} new />}
                 />
               )}
             </Route>
             {admin && (
               <>
                 <Route
-                  path={`edit/${story.id}`}
+                  path={`edit/${story.url}`}
                   element={
                     <StoryEdit
-                      story={story}
+                      url={story.url}
                       onChapterEdit={() => navigate(-1)}
                     />
                   }
@@ -108,21 +90,7 @@ function Main() {
         {admin && (
           <Route
             path="new"
-            element={
-              <StoryEdit
-                story={{
-                  title: "",
-                  id: "",
-                  chapters: [],
-                  dateCreated: new Date(),
-                  icon: "",
-                  url: "",
-                  visible: false,
-                }}
-                onChapterEdit={() => null}
-                new
-              />
-            }
+            element={<StoryEdit url="" onChapterEdit={() => null} new />}
           />
         )}
         {admin ? (

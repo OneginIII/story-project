@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import "./Library.css";
-import { IStory } from "../mockData";
 import { AdminContext } from "../index";
 import { Link, NavLink } from "react-router-dom";
 import storyService from "../storyService";
+import { IStoryLink } from "../types";
 
 function Library() {
   const admin = useContext(AdminContext);
-  const [stories, setStories] = useState<IStory[]>([]);
+  const [stories, setStories] = useState<IStoryLink[]>([]);
 
   useEffect(() => {
     storyService.getStoryList().then((serverStories) => {
@@ -34,7 +34,7 @@ function Library() {
         return (
           <NavLink
             to={`${story.url}/`}
-            key={story.id}
+            key={story.url}
             className={
               window.location.href.includes(story.url)
                 ? "story box-button active"

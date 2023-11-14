@@ -12,6 +12,12 @@ export interface IChapter {
   text: string;
 }
 
+export interface IStoryLink {
+  title: string;
+  url: string;
+  icon: string;
+}
+
 export const stories: IStory[] = [
   {
     id: "9aac3dca-e0a0-48c8-bd74-1802c8343ba6",

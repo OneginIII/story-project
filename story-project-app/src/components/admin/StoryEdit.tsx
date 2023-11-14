@@ -3,9 +3,10 @@ import DeleteModal from "./DeleteModal";
 import "./Edit.css";
 import { IStory } from "../../mockData";
 import Modal from "../Modal";
+import storyService from "../../storyService";
 
 function StoryEdit(props: {
-  story: IStory;
+  url: string;
   onChapterEdit: (set: boolean) => void;
   new?: boolean;
 }) {
@@ -13,16 +14,30 @@ function StoryEdit(props: {
   const [newTitle, setNewTitle] = useState("");
   const [newIcon, setNewIcon] = useState("");
   const [newUrl, setNewUrl] = useState("");
+  const [storyData, setStoryData] = useState<IStory>({
+    title: "",
+    chapters: [],
+    dateCreated: new Date(),
+    icon: "",
+    id: "",
+    url: "",
+    visible: true,
+  });
 
   useEffect(() => {
-    setNewTitle(props.story ? props.story.title : "");
-    setNewUrl(props.story ? props.story.url : "");
+    if (!props.new) {
+      storyService.getStoryByUrl(props.url).then((serverStory) => {
+        setStoryData(serverStory);
+      });
+    }
+    setNewTitle(storyData ? storyData.title : "");
+    setNewUrl(storyData ? storyData.url : "");
     if (props.new) {
       setNewTitle("");
       setNewIcon("");
       setNewUrl("");
     }
-  }, [props.story, props.new]);
+  }, [props.url, storyData, props.new]);
 
   return (
     <>
