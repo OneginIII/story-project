@@ -1,13 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import DeleteModal from "./DeleteModal";
-import { Story } from "../../mockData";
+import { IStory } from "../../mockData";
 import ChapterButton from "../ChapterButton";
 import "./Edit.css";
 import Modal from "../Modal";
 
 function ChapterEdit(props: {
-  story: Story;
+  story: IStory;
   setCurrentChapter: (num: number) => void;
   onEditStory: () => void;
   new?: boolean;

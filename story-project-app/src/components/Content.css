@@ -6,6 +6,7 @@
   padding: 1em 2em 2em 2em;
   max-width: 60em;
   margin: 0 auto;
+  font-size: 16pt;
 }
 
 .content-icon {
@@ -56,4 +57,21 @@ h2 {
 
 .horizontal-buttons:has(button:only-child) {
   justify-content: end;
+}
+
+.markdown-content {
+  font-size: 16pt;
+  max-width: 40em;
+  margin: 0 auto;
+}
+
+.markdown-content h3 {
+  text-align: center;
+  font-size: 24pt;
+}
+
+.markdown-content h2 {
+  text-align: center;
+  width: 100%;
+  font-size: 32pt;
 }

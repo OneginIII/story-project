@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import DeleteModal from "./DeleteModal";
 import "./Edit.css";
-import { Story } from "../../mockData";
+import { IStory } from "../../mockData";
 import Modal from "../Modal";
 
 function StoryEdit(props: {
-  story: Story;
+  story: IStory;
   onChapterEdit: (set: boolean) => void;
   new?: boolean;
 }) {

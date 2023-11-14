@@ -1,12 +1,16 @@
 .menu {
+  position: relative;
   display: flex;
-  align-items: center;
+  justify-content: center;
+  align-items: stretch;
   border-width: 0 0 1px 0;
   border-style: solid;
   border-color: #FFF1;
+  width: 100%;
 }
 .menu .box {
   flex: 1 1;
+  display: flex;
   border-width: 0 1px;
   border-style: solid;
   border-color: #FFF1;
@@ -14,6 +18,8 @@
   text-align: center;
   text-decoration: none;
   padding: 1em;
+  justify-content: center;
+  align-items: center;
 }
 .menu .box:last-child {
   border-right-width: 0;

@@ -1,30 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import Library from "./Library";
 import "./Main.css";
 import Menu from "./Menu";
 import StaticContent from "./StaticContent";
 import StoryContent from "./StoryContent";
-import { pages, stories } from "../mockData";
+import { stories } from "../mockData";
 import { AdminContext } from "../index";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import NotFound from "../NotFound";
 import ChapterEdit from "./admin/ChapterEdit";
 import StoryEdit from "./admin/StoryEdit";
-
-// Temp default page
-const initialPage = pages[0];
+import pageService from "../pageService";
+import Settings from "./Settings";
+import { homePage } from "../App";
+import Admin from "./Admin";
 
 function Main() {
-  const navigate = useNavigate();
+  const [pages, setPages] = useState<string[]>([]);
 
+  useEffect(() => {
+    pageService.getPageList().then((serverPages) => {
+      setPages(serverPages.reverse().map((page: string) => page.split(".")[0]));
+    });
+  }, []);
+
+  const navigate = useNavigate();
   const admin = useContext(AdminContext);
 
   return (
     <main>
       <div className="sidebar">
-        {!admin && <Menu pages={pages} />}
-        <Library stories={stories} />
+        {!admin && <Menu />}
+        <Library />
       </div>
       <Routes>
         {stories.map((story) => (
@@ -91,11 +99,12 @@ function Main() {
         ))}
         {pages.map((page) => (
           <Route
-            key={page.title}
-            path={`/${page.title.toLocaleLowerCase()}`}
-            element={<StaticContent title={page.title} text={page.text} />}
+            key={page}
+            path={`/${page.toLocaleLowerCase()}`}
+            element={<StaticContent name={page} />}
           />
         ))}
+        <Route path="settings" element={<Settings />} />
         {admin && (
           <Route
             path="new"
@@ -116,12 +125,11 @@ function Main() {
             }
           />
         )}
-        <Route
-          path="/"
-          element={
-            <StaticContent title={initialPage.title} text={initialPage.text} />
-          }
-        />
+        {admin ? (
+          <Route path="/" element={<Admin />} />
+        ) : (
+          <Route path="/" element={<StaticContent name={homePage} />} />
+        )}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>

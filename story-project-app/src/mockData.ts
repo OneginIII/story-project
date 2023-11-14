@@ -1,18 +1,18 @@
-export interface Story {
+export interface IStory {
   id: string;
   title: string;
-  chapters: Chapter[];
+  chapters: IChapter[];
   url: string;
   visible: boolean;
   dateCreated: Date;
   icon: string;
 }
-export interface Chapter {
+export interface IChapter {
   title: string;
   text: string;
 }
 
-export const stories: Story[] = [
+export const stories: IStory[] = [
   {
     id: "9aac3dca-e0a0-48c8-bd74-1802c8343ba6",
     title: "A Night in the Woods",

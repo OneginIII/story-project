@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import ChapterButton from "./ChapterButton";
 import "./Content.css";
-import { Story } from "../mockData";
+import { IStory } from "../mockData";
 import { useParams } from "react-router-dom";
 import NotFound from "../NotFound";
 
 function StoryContent(props: {
-  story: Story;
+  story: IStory;
   setCurrentChapter: (val: number) => void;
 }) {
   const { chapter } = useParams();

@@ -1,10 +1,19 @@
-function StaticContent(props: { title: string; text: string }) {
+import { useEffect, useState } from "react";
+import pageService from "../pageService";
+import Markdown from "marked-react";
+
+function StaticContent(props: { name: string }) {
+  const [content, setContent] = useState("");
+
+  useEffect(() => {
+    pageService.getPageContent(props.name).then((serverContent) => {
+      setContent(serverContent);
+    });
+  }, [content, props.name]);
+
   return (
-    <div className="content">
-      <h2>{props.title}</h2>
-      <div className="content-body">
-        <p>{props.text}</p>
-      </div>
+    <div className="markdown-content">
+      <Markdown>{content}</Markdown>
     </div>
   );
 }

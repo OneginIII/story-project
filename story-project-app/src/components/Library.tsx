@@ -1,11 +1,20 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./Library.css";
-import { Story } from "../mockData";
+import { IStory } from "../mockData";
 import { AdminContext } from "../index";
 import { Link, NavLink } from "react-router-dom";
+import storyService from "../storyService";
 
-function Library(props: { stories: Story[] }) {
+function Library() {
   const admin = useContext(AdminContext);
+  const [stories, setStories] = useState<IStory[]>([]);
+
+  useEffect(() => {
+    storyService.getStoryList().then((serverStories) => {
+      setStories(serverStories);
+    });
+  }, []);
+
   return (
     <div className="library">
       {admin && (
@@ -21,7 +30,7 @@ function Library(props: { stories: Story[] }) {
           + Add New Story
         </Link>
       )}
-      {props.stories.map((story) => {
+      {stories.map((story) => {
         return (
           <NavLink
             to={`${story.url}/`}
