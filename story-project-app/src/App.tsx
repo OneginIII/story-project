@@ -8,6 +8,8 @@ import "./components/Modal.css";
 import LoginModal from "./components/LoginModal";
 import { useNavigate } from "react-router-dom";
 
+export const homePage = "Home";
+
 function App() {
   const navigate = useNavigate();
   const [displayLogin, setDisplayLogin] = useState(false);

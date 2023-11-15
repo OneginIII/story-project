@@ -3,10 +3,10 @@
 import { useState } from "react";
 import StoryEdit from "./StoryEdit";
 import ChapterEdit from "./ChapterEdit";
-import { Story } from "../../mockData";
+import { IStory } from "../../mockData";
 
 function Edit(props: {
-  story: Story;
+  story: IStory;
   setCurrentChapter: (value: number) => void;
 }) {
   const [editStory, setEditStory] = useState(false);

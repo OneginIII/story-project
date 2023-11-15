@@ -1,86 +1,76 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import Library from "./Library";
 import "./Main.css";
 import Menu from "./Menu";
 import StaticContent from "./StaticContent";
 import StoryContent from "./StoryContent";
-import { pages, stories } from "../mockData";
 import { AdminContext } from "../index";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import NotFound from "../NotFound";
 import ChapterEdit from "./admin/ChapterEdit";
 import StoryEdit from "./admin/StoryEdit";
-
-// Temp default page
-const initialPage = pages[0];
+import pageService from "../pageService";
+import Settings from "./Settings";
+import { homePage } from "../App";
+import Admin from "./Admin";
+import { IStoryLink } from "../types";
+import storyService from "../storyService";
 
 function Main() {
-  const navigate = useNavigate();
+  const [pages, setPages] = useState<string[]>([]);
+  const [stories, setStories] = useState<IStoryLink[]>([]);
 
+  useEffect(() => {
+    pageService.getPageList().then((serverPages) => {
+      setPages(serverPages.reverse().map((page: string) => page.split(".")[0]));
+    });
+  }, []);
+
+  useEffect(() => {
+    storyService.getStoryList().then((serverStories) => {
+      setStories(serverStories);
+    });
+  }, []);
+
+  const navigate = useNavigate();
   const admin = useContext(AdminContext);
 
   return (
     <main>
       <div className="sidebar">
-        {!admin && <Menu pages={pages} />}
-        <Library stories={stories} />
+        {!admin && <Menu />}
+        <Library />
       </div>
       <Routes>
         {stories.map((story) => (
           // Have to use React.Fragment here to access key property.
-          <React.Fragment key={story.id}>
+          <React.Fragment key={story.url}>
             <Route path={`/${story.url}`}>
               <Route
                 path=":chapter?"
                 element={
                   admin ? (
-                    <ChapterEdit
-                      story={story}
-                      setCurrentChapter={(val: number) => {
-                        if (story.chapters[val]) {
-                          navigate(`${story.url}/` + String(val + 1));
-                        }
-                      }}
-                      onEditStory={() => navigate(`edit/${story.id}`)}
-                    />
+                    <ChapterEdit url={story.url} />
                   ) : (
-                    <StoryContent
-                      story={story}
-                      setCurrentChapter={(val: number) => {
-                        if (story.chapters[val]) {
-                          navigate(`${story.url}/` + String(val + 1));
-                        }
-                      }}
-                    />
+                    <StoryContent url={story.url} />
                   )
                 }
               />
               {admin && (
                 <Route
                   path="new"
-                  element={
-                    <ChapterEdit
-                      story={story}
-                      setCurrentChapter={(val: number) => {
-                        if (story.chapters[val]) {
-                          navigate(`${story.url}/` + String(val + 1));
-                        }
-                      }}
-                      onEditStory={() => navigate(`edit/${story.id}`)}
-                      new
-                    />
-                  }
+                  element={<ChapterEdit url={story.url} new />}
                 />
               )}
             </Route>
             {admin && (
               <>
                 <Route
-                  path={`edit/${story.id}`}
+                  path={`edit/${story.url}`}
                   element={
                     <StoryEdit
-                      story={story}
+                      url={story.url}
                       onChapterEdit={() => navigate(-1)}
                     />
                   }
@@ -91,37 +81,23 @@ function Main() {
         ))}
         {pages.map((page) => (
           <Route
-            key={page.title}
-            path={`/${page.title.toLocaleLowerCase()}`}
-            element={<StaticContent title={page.title} text={page.text} />}
+            key={page}
+            path={`/${page.toLocaleLowerCase()}`}
+            element={<StaticContent name={page} />}
           />
         ))}
+        <Route path="settings" element={<Settings />} />
         {admin && (
           <Route
             path="new"
-            element={
-              <StoryEdit
-                story={{
-                  title: "",
-                  id: "",
-                  chapters: [],
-                  dateCreated: new Date(),
-                  icon: "",
-                  url: "",
-                  visible: false,
-                }}
-                onChapterEdit={() => null}
-                new
-              />
-            }
+            element={<StoryEdit url="" onChapterEdit={() => null} new />}
           />
         )}
-        <Route
-          path="/"
-          element={
-            <StaticContent title={initialPage.title} text={initialPage.text} />
-          }
-        />
+        {admin ? (
+          <Route path="/" element={<Admin />} />
+        ) : (
+          <Route path="/" element={<StaticContent name={homePage} />} />
+        )}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>

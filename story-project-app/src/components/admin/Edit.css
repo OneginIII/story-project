@@ -1,4 +1,8 @@
 .edit {
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  max-width: 50em;
   margin: 0 auto;
 }
 
@@ -6,13 +10,19 @@
   margin-bottom: 1em;
 }
 
-.edit input {
-  min-width: 18em;
-}
-
 .edit textarea {
-  width: 40em;
   height: 30em;
   margin-left: 0;
   padding: 0.5em 1em;
+  width: 100%;
+}
+
+.edit .chapter-button {
+  margin: 0;
+}
+
+.edit .chapter-select {
+  max-width: 45em;
+  margin: 0 auto;
+  margin-bottom: 2em;
 }
