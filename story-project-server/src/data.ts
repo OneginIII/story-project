@@ -7,9 +7,37 @@ export interface IStory {
   dateCreated: Date;
   icon: string;
 }
+
+export function isStory(story: unknown): story is IStory {
+  if (
+    typeof (story as IStory)["id"] === "string" &&
+    typeof (story as IStory)["title"] === "string" &&
+    (story as IStory)["chapters"].map(
+      (chapter) =>
+        typeof chapter.text === "string" && typeof chapter.title === "string"
+    ) &&
+    typeof (story as IStory)["url"] === "string" &&
+    typeof (story as IStory)["visible"] === "boolean" &&
+    // Checking for the date needs to be fixed, once working with a database
+    typeof (story as IStory)["dateCreated"] === "string" &&
+    typeof (story as IStory)["icon"] === "string"
+  ) {
+    return true;
+  }
+  return false;
+}
 export interface IChapter {
   title: string;
   text: string;
+}
+export function isChapter(chapter: unknown): chapter is IChapter {
+  if (
+    typeof (chapter as IChapter)["title"] === "string" &&
+    typeof (chapter as IChapter)["text"] === "string"
+  ) {
+    return true;
+  }
+  return false;
 }
 
 export interface IStoryLink {
@@ -18,7 +46,8 @@ export interface IStoryLink {
   icon: string;
 }
 
-export const stories: IStory[] = [
+export const setStories = (newStories: IStory[]) => (stories = newStories);
+export let stories: IStory[] = [
   {
     id: "9aac3dca-e0a0-48c8-bd74-1802c8343ba6",
     title: "A Night in the Woods",

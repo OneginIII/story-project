@@ -15,6 +15,7 @@ h1 {
   font-weight: normal;
   margin: 0 0 20pt 0;
   user-select: none;
+  line-height: 60pt;
 }
 
 header a  {

@@ -25,6 +25,8 @@ h2 {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1em;
+  max-width: 35em;
+  margin-bottom: 1me;
 }
 
 .content-body {

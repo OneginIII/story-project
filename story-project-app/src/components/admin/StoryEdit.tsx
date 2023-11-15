@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, FormEvent } from "react";
 import DeleteModal from "./DeleteModal";
 import "./Edit.css";
-import { IStory } from "../../mockData";
 import Modal from "../Modal";
 import storyService from "../../storyService";
+import { IStory } from "../../types";
+import adminService from "../../adminService";
+import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 function StoryEdit(props: {
   url: string;
   onChapterEdit: (set: boolean) => void;
   new?: boolean;
 }) {
+  const navigate = useNavigate();
   const [showDelete, setShowDelete] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newIcon, setNewIcon] = useState("");
@@ -28,20 +32,64 @@ function StoryEdit(props: {
     if (!props.new) {
       storyService.getStoryByUrl(props.url).then((serverStory) => {
         setStoryData(serverStory);
+        setNewTitle(serverStory.title);
+        setNewUrl(serverStory.url);
       });
-    }
-    setNewTitle(storyData ? storyData.title : "");
-    setNewUrl(storyData ? storyData.url : "");
-    if (props.new) {
+    } else {
       setNewTitle("");
       setNewIcon("");
       setNewUrl("");
     }
-  }, [props.url, storyData, props.new]);
+  }, [props.url, props.new]);
+
+  const handleEdit = (event: FormEvent) => {
+    event.preventDefault();
+    adminService
+      .updateStory(storyData.id, {
+        ...storyData,
+        title: newTitle,
+        icon: newIcon,
+        url: newUrl,
+      })
+      .then((response) => {
+        console.log(response.status);
+        setStoryData(response.data);
+        navigate(`../${response.data.url}`);
+        navigate(0);
+      });
+  };
+
+  const handleCreate = (event: FormEvent) => {
+    event.preventDefault();
+    adminService
+      .createStory({
+        title: newTitle,
+        chapters: [],
+        dateCreated: new Date(),
+        icon: newIcon,
+        id: uuidv4(),
+        url: newUrl,
+        visible: false,
+      })
+      .then((response) => {
+        console.log(response.status);
+        navigate(`../${response.data.url}`);
+        navigate(0);
+      });
+  };
+
+  const handleDelete = (event: FormEvent) => {
+    event.preventDefault();
+    adminService.deleteStory(storyData.id).then((response) => {
+      console.log(response.status);
+      navigate(`../`);
+      navigate(0);
+    });
+  };
 
   return (
     <>
-      <form className="edit" onSubmit={(e) => e.preventDefault()}>
+      <form className="edit" onSubmit={props.new ? handleCreate : handleEdit}>
         <h2>{props.new ? "Create story" : "Edit story"}</h2>
         <label htmlFor="title">Title</label>
         <input
@@ -70,12 +118,13 @@ function StoryEdit(props: {
           {!props.new && (
             <>
               <button
+                type="button"
                 className="btn-danger"
                 onClick={() => setShowDelete(true)}
               >
                 Delete story
               </button>
-              <button onClick={() => props.onChapterEdit(false)}>
+              <button type="button" onClick={() => props.onChapterEdit(false)}>
                 Back to chapter edit
               </button>
             </>
@@ -87,6 +136,7 @@ function StoryEdit(props: {
       </form>
       <Modal isOpen={showDelete} onClose={() => setShowDelete(false)}>
         <DeleteModal
+          onConfirm={handleDelete}
           toDeleteText="story"
           onClose={() => setShowDelete(false)}
         />

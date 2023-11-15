@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import ChapterButton from "./ChapterButton";
 import "./Content.css";
-import { IStory } from "../mockData";
 import { useNavigate, useParams } from "react-router-dom";
 import NotFound from "../NotFound";
 import storyService from "../storyService";
+import { IStory } from "../types";
 
 function StoryContent(props: { url: string }) {
   const navigate = useNavigate();
