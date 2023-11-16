@@ -13,8 +13,23 @@ export interface IChapter {
   text: string;
 }
 
-export interface IStoryLink {
+export interface IDBStory {
+  id: string;
+  created_by: string;
   title: string;
-  url: string;
   icon: string;
+  url: string;
+  visible: boolean;
+  created_at: string;
+  modified_at: string;
+}
+
+export interface IDBChapter {
+  id: string;
+  story_id: string;
+  number: number;
+  title: string;
+  text: string;
+  created_at: string;
+  modified_at: string;
 }

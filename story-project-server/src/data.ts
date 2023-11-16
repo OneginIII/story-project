@@ -40,10 +40,15 @@ export function isChapter(chapter: unknown): chapter is IChapter {
   return false;
 }
 
-export interface IStoryLink {
+export interface IDBStory {
+  id: string;
+  created_by: string;
   title: string;
-  url: string;
   icon: string;
+  url: string;
+  visible: boolean;
+  created_at: string;
+  modified_at: string;
 }
 
 export const setStories = (newStories: IStory[]) => (stories = newStories);

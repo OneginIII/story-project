@@ -22,4 +22,15 @@ const getStoryChapter = (url: string, chapter: number) => {
   return request.then((response) => response.data).catch((err) => err);
 };
 
-export default { getStoryList, getStoryByUrl, getStoryIcon, getStoryChapter };
+const getChapterCount = (url: string) => {
+  const request = axios.get(`${serverUrl}/count/${url}`);
+  return request.then((response) => response.data).catch((err) => err);
+};
+
+export default {
+  getStoryList,
+  getStoryByUrl,
+  getStoryIcon,
+  getStoryChapter,
+  getChapterCount,
+};
