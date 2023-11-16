@@ -1,0 +1,35 @@
+version: "3.1"
+
+services:
+  app:
+    build: ./story-project-app
+    ports:
+      - 4000:4000
+    env_file: ./story-project-app/.env
+    volumes:
+      - type: bind
+        source: ./story-project-app/src
+        target: /app/src
+  server:
+    build: ./story-project-server
+    ports:
+      - 3000:3000
+    env_file:
+      - ./story-project-server/.env
+    volumes:
+      - type: bind
+        source: ./story-project-server/src
+        target: /server/src
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - 5432:5432
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

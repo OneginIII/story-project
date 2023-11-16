@@ -8,6 +8,10 @@ const staticPagesPath = String(process.env.STATIC_PAGE_LOCATION);
 
 // Stories
 
+router.get("/", (req, res) => {
+  res.send("Story Project Server");
+});
+
 router.get("/stories", (req, res) => {
   res.send(
     JSON.stringify(
