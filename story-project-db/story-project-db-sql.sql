@@ -103,7 +103,7 @@ VALUES
 INSERT INTO stories (created_by, title, icon, url, visible, created_at, modified_at)
 VALUES
   ((SELECT id FROM users WHERE username='story-admin'),
-  'Hidden Tales', '', 'hidden-tales', true, NOW(), NOW());
+  'Hidden Tales', '', 'hidden-tales', false, NOW(), NOW());
 
 INSERT INTO chapters (story_id, number, title, text, created_at, modified_at)
 VALUES

@@ -1,5 +1,5 @@
 // GET
-const getStories = "SELECT * FROM stories;";
+const getStories = "SELECT * FROM stories ORDER BY created_at;";
 const getStory = "SELECT * FROM stories WHERE id = $1;";
 const geChapters = "SELECT * FROM chapters WHERE story_id = $1;";
 

@@ -25,3 +25,12 @@
   background-size: 50%;
   opacity: 0.25;
 }
+
+.visible-icon {
+  position: absolute;
+  right: 1em;
+}
+
+.icon-hidden {
+  opacity: 0.5;
+}

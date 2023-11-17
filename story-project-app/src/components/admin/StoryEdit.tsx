@@ -18,6 +18,7 @@ function StoryEdit(props: {
   const [newTitle, setNewTitle] = useState("");
   const [newIcon, setNewIcon] = useState("");
   const [newUrl, setNewUrl] = useState("");
+  const [newVisibility, setNewVisibility] = useState(true);
   const [storyData, setStoryData] = useState<IStory>({
     title: "",
     created_at: "",
@@ -35,11 +36,13 @@ function StoryEdit(props: {
         setStoryData(serverStory);
         setNewTitle(serverStory.title);
         setNewUrl(serverStory.url);
+        setNewVisibility(serverStory.visible);
       });
     } else {
       setNewTitle("");
       setNewIcon("");
       setNewUrl("");
+      setNewVisibility(true);
     }
   }, [props.id, props.new]);
 
@@ -51,6 +54,7 @@ function StoryEdit(props: {
         title: newTitle,
         icon: newIcon,
         url: newUrl,
+        visible: newVisibility,
       })
       .then((response) => {
         console.log(response.status);
@@ -116,6 +120,18 @@ function StoryEdit(props: {
           value={newUrl}
           onChange={(e) => setNewUrl(e.target.value)}
         />
+        <div>
+          <label htmlFor="visibility" style={{ width: "max-content" }}>
+            Public visibility
+          </label>
+          <input
+            id="visibility"
+            type="checkbox"
+            checked={newVisibility}
+            onChange={(e) => setNewVisibility(e.target.checked)}
+            style={{ width: "max-content" }}
+          />
+        </div>
         <div className="horizontal-buttons">
           {!props.new && (
             <>

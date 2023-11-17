@@ -3,11 +3,11 @@ import "./Library.css";
 import { AdminContext } from "../index";
 import { Link, NavLink } from "react-router-dom";
 import storyService from "../storyService";
-import { IDBStory } from "../types";
+import { IStory } from "../types";
 
 function Library() {
   const admin = useContext(AdminContext);
-  const [stories, setStories] = useState<IDBStory[]>([]);
+  const [stories, setStories] = useState<IStory[]>([]);
 
   useEffect(() => {
     storyService.getStoryList().then((serverStories) => {
@@ -31,23 +31,33 @@ function Library() {
         </Link>
       )}
       {stories.map((story) => {
-        return (
-          <NavLink
-            to={`${story.url}/`}
-            key={story.url}
-            className={
-              window.location.href.includes(story.url)
-                ? "story box-button active"
-                : "story box-button"
-            }
-          >
-            <div
-              className="story-icon-bg"
-              style={{ backgroundImage: "url(" + story.icon + ")" }}
-            />
-            {story.title}
-          </NavLink>
-        );
+        if (admin || story.visible) {
+          return (
+            <NavLink
+              to={`${story.url}/`}
+              key={story.url}
+              className={
+                window.location.href.includes(story.url)
+                  ? "story box-button active"
+                  : "story box-button"
+              }
+            >
+              <div
+                className="story-icon-bg"
+                style={{ backgroundImage: "url(" + story.icon + ")" }}
+              />
+              {story.title}
+              {admin && (
+                <img
+                  className={
+                    story.visible ? "visible-icon" : "visible-icon icon-hidden"
+                  }
+                  src={story.visible ? "/ui/showTrue.svg" : "/ui/showFalse.svg"}
+                />
+              )}
+            </NavLink>
+          );
+        }
       })}
     </div>
   );
