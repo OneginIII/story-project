@@ -4,28 +4,35 @@ import "./Content.css";
 import { useNavigate, useParams } from "react-router-dom";
 import NotFound from "../NotFound";
 import storyService from "../storyService";
-import { IStory } from "../types";
+import { IChapter, IStory } from "../types";
 
-function StoryContent(props: { url: string }) {
+function StoryContent(props: { id: string }) {
   const navigate = useNavigate();
   const { chapter } = useParams();
   const currentChapter = Number(chapter) ? Number(chapter) - 1 : 0;
   const isStringChapter = chapter && !Number(chapter);
   const [storyData, setStoryData] = useState<IStory>({
     title: "",
-    chapters: [],
-    dateCreated: new Date(),
     icon: "",
     id: "",
     url: "",
+    created_by: "",
     visible: true,
+    created_at: "",
+    modified_at: "",
   });
+  const [chapterData, setChapterData] = useState<IChapter[]>([]);
 
   useEffect(() => {
-    storyService.getStoryByUrl(props.url).then((serverStory) => {
+    storyService.getStory(props.id).then((serverStory) => {
       setStoryData(serverStory);
+      if (serverStory.id) {
+        storyService.getChapters(serverStory.id).then((serverChapters) => {
+          setChapterData(serverChapters);
+        });
+      }
     });
-  }, [props.url]);
+  }, [props.id]);
 
   // Keyboard navigation for story content.
   useEffect(() => {
@@ -35,7 +42,7 @@ function StoryContent(props: { url: string }) {
           handleSetCurrentChapter(currentChapter - 1);
         }
       } else if (event.key == "ArrowRight") {
-        if (currentChapter < storyData.chapters.length - 1) {
+        if (currentChapter < chapterData.length - 1) {
           handleSetCurrentChapter(currentChapter + 1);
         }
       }
@@ -49,12 +56,12 @@ function StoryContent(props: { url: string }) {
   });
 
   const handleSetCurrentChapter = (val: number) => {
-    if (storyData.chapters[val]) {
+    if (chapterData[val]) {
       navigate(`../` + String(val + 1));
     }
   };
 
-  if (!storyData.chapters[currentChapter] || isStringChapter) {
+  if (!chapterData[currentChapter] || isStringChapter) {
     return <NotFound />;
   }
 
@@ -65,7 +72,7 @@ function StoryContent(props: { url: string }) {
       )}
       <h2>{storyData?.title}</h2>
       <div className="chapter-select">
-        {storyData?.chapters.map((_chapter, index) => {
+        {chapterData.map((_chapter, index) => {
           return (
             <ChapterButton
               key={index}
@@ -80,10 +87,9 @@ function StoryContent(props: { url: string }) {
       <div className="content-body">
         <h3>
           {/*Something (Prettier?) really wants to add that {" "} here for some reason. (Maybe end of line)*/}
-          Chapter {currentChapter + 1} –{" "}
-          {storyData?.chapters[currentChapter].title}
+          Chapter {currentChapter + 1} – {chapterData[currentChapter].title}
         </h3>
-        <p>{storyData?.chapters[currentChapter].text}</p>
+        <p>{chapterData[currentChapter].text}</p>
       </div>
       <div className="bottom-chapter-select">
         <div className="chapter-select" style={{ gap: "3em", flex: 1 }}>
@@ -92,15 +98,15 @@ function StoryContent(props: { url: string }) {
               text="⭠"
               selected={false}
               onChapterClick={handleSetCurrentChapter}
-              targetChapter={(currentChapter - 1) % storyData?.chapters.length}
+              targetChapter={(currentChapter - 1) % chapterData.length}
             />
           )}
-          {currentChapter < storyData.chapters.length - 1 && (
+          {currentChapter < chapterData.length - 1 && (
             <ChapterButton
               text="⭢"
               selected={false}
               onChapterClick={handleSetCurrentChapter}
-              targetChapter={(currentChapter + 1) % storyData?.chapters.length}
+              targetChapter={(currentChapter + 1) % chapterData.length}
             />
           )}
         </div>

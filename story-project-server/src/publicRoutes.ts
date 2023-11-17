@@ -6,43 +6,28 @@ import dao from "./dao";
 const router = express.Router();
 const staticPagesPath = String(process.env.STATIC_PAGE_LOCATION);
 
-// Stories
+// Default
 
 router.get("/", (req, res) => {
   res.send("Story Project Server");
 });
 
+// Stories
+
+// GET
 router.get("/stories", async (req, res) => {
   const result = await dao.getStories();
   res.send(result.rows);
 });
 
-router.get("/story/:url", async (req, res) => {
-  const result = await dao.getStory(req.params.url);
-  res.send(result.rows);
-  // const story = stories.find((story) => story.url === req.params.url);
-  // res.send(JSON.stringify(story));
+router.get("/story/:id", async (req, res) => {
+  const result = await dao.getStory(req.params.id);
+  res.send(result.rows[0]);
 });
 
-router.get("/story/:url/:chapter", async (req, res) => {
-  const result = await dao.getStoryChapter(
-    req.params.url,
-    Number(req.params.chapter)
-  );
+router.get("/chapters/:story_id", async (req, res) => {
+  const result = await dao.getChapters(req.params.story_id);
   res.send(result.rows);
-  // const story = stories.find((story) => story.url === req.params.url);
-  // res.send(
-  //   JSON.stringify(
-  //     story?.chapters[
-  //       Number(req.params.chapter) ? Number(req.params.chapter) : 0
-  //     ]
-  //   )
-  // );
-});
-
-router.get("/count/:url/", async (req, res) => {
-  const result = await dao.getChapterCount(req.params.url);
-  res.send(result.rows[0]["count"]);
 });
 
 // Static pages

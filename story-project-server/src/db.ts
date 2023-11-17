@@ -12,7 +12,7 @@ const pool = new pg.Pool({
 
 export const executeQuery = async (
   query: string,
-  parameters?: Array<string | number>
+  parameters?: Array<string | number | boolean>
 ) => {
   const client = await pool.connect();
   try {

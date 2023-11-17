@@ -14,12 +14,12 @@ import pageService from "../pageService";
 import Settings from "./Settings";
 import { homePage } from "../App";
 import Admin from "./Admin";
-import { IStoryLink } from "../types";
+import { IStory } from "../types";
 import storyService from "../storyService";
 
 function Main() {
   const [pages, setPages] = useState<string[]>([]);
-  const [stories, setStories] = useState<IStoryLink[]>([]);
+  const [stories, setStories] = useState<IStory[]>([]);
 
   useEffect(() => {
     pageService.getPageList().then((serverPages) => {
@@ -51,16 +51,16 @@ function Main() {
                 path=":chapter?"
                 element={
                   admin ? (
-                    <ChapterEdit url={story.url} />
+                    <ChapterEdit id={story.id} />
                   ) : (
-                    <StoryContent url={story.url} />
+                    <StoryContent id={story.id} />
                   )
                 }
               />
               {admin && (
                 <Route
                   path="new"
-                  element={<ChapterEdit url={story.url} new />}
+                  element={<ChapterEdit id={story.url} new />}
                 />
               )}
             </Route>
@@ -70,7 +70,7 @@ function Main() {
                   path={`edit/${story.url}`}
                   element={
                     <StoryEdit
-                      url={story.url}
+                      id={story.id}
                       onChapterEdit={() => navigate(-1)}
                     />
                   }
@@ -90,7 +90,7 @@ function Main() {
         {admin && (
           <Route
             path="new"
-            element={<StoryEdit url="" onChapterEdit={() => null} new />}
+            element={<StoryEdit id="" onChapterEdit={() => null} new />}
           />
         )}
         {admin ? (

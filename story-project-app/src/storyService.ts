@@ -7,30 +7,18 @@ const getStoryList = () => {
   return request.then((response) => response.data).catch((err) => err);
 };
 
-const getStoryByUrl = (url: string) => {
-  const request = axios.get(`${serverUrl}/story/${url}`);
+const getStory = (id: string) => {
+  const request = axios.get(`${serverUrl}/story/${id}`);
   return request.then((response) => response.data).catch((err) => err);
 };
 
-const getStoryIcon = (url: string) => {
-  const request = axios.get(`${serverUrl}/story/${url}/icon`);
-  return request.then((response) => response.data).catch((err) => err);
-};
-
-const getStoryChapter = (url: string, chapter: number) => {
-  const request = axios.get(`${serverUrl}/story/${url}/${chapter}`);
-  return request.then((response) => response.data).catch((err) => err);
-};
-
-const getChapterCount = (url: string) => {
-  const request = axios.get(`${serverUrl}/count/${url}`);
+const getChapters = (id: string) => {
+  const request = axios.get(`${serverUrl}/chapters/${id}`);
   return request.then((response) => response.data).catch((err) => err);
 };
 
 export default {
+  getStory,
   getStoryList,
-  getStoryByUrl,
-  getStoryIcon,
-  getStoryChapter,
-  getChapterCount,
+  getChapters,
 };

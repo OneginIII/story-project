@@ -1,15 +1,31 @@
-const getStories = "SELECT * FROM stories";
-const getStoryByUrl = "SELECT * FROM stories WHERE url = $1";
-const getChaptersByStoryId = "SELECT * FROM chapters WHERE story_id = $1";
-const getChapterByStoryUrlAndNumber =
-  "SELECT * FROM chapters WHERE story_id = (SELECT id FROM stories WHERE url = $1) AND number = $2";
-const getChapterCountByUrl =
-  "SELECT COUNT(*) FROM chapters WHERE story_id = (SELECT id FROM stories WHERE url = $1)";
+// GET
+const getStories = "SELECT * FROM stories;";
+const getStory = "SELECT * FROM stories WHERE id = $1;";
+const geChapters = "SELECT * FROM chapters WHERE story_id = $1;";
+
+// PUT
+const updateStory =
+  "UPDATE stories SET title = $2, icon = $3, url = $4, visible = $5, modified_at = NOW() WHERE id = $1;";
+const updateChapter =
+  "UPDATE chapters SET title = $2, text = $3, modified_at = NOW() WHERE id = $1;";
+
+// POST
+const createStory =
+  "INSERT INTO stories (title, icon, url, visible, created_at, modified_at) VALUES ($1, $2, $3, $4, NOW(), NOW());";
+const createChapter =
+  "INSERT INTO chapters (story_id, title, text, created_at, modified_at) VALUES($1, $2, $3, NOW(), NOW());";
+
+const deleteStory = "DELETE FROM stories WHERE id = $1;";
+const deleteChapter = "DELETE FROM chapters WHERE id = $1;";
 
 export {
   getStories,
-  getChaptersByStoryId,
-  getStoryByUrl,
-  getChapterByStoryUrlAndNumber,
-  getChapterCountByUrl,
+  getStory,
+  geChapters,
+  updateStory,
+  updateChapter,
+  createStory,
+  createChapter,
+  deleteStory,
+  deleteChapter,
 };

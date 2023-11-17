@@ -9,7 +9,7 @@ import { IChapter, IStory } from "../../types";
 import adminService from "../../adminService";
 import NotFound from "../../NotFound";
 
-function ChapterEdit(props: { url: string; new?: boolean }) {
+function ChapterEdit(props: { id: string; new?: boolean }) {
   const navigate = useNavigate();
   const { chapter } = useParams();
   const currentChapter = Number(chapter) ? Number(chapter) - 1 : 0;
@@ -19,33 +19,40 @@ function ChapterEdit(props: { url: string; new?: boolean }) {
   const [editedText, setEditedText] = useState("");
   const [storyData, setStoryData] = useState<IStory>({
     title: "",
-    chapters: [],
-    dateCreated: new Date(),
+    created_at: "",
     icon: "",
     id: "",
     url: "",
     visible: true,
+    modified_at: "",
+    created_by: "",
   });
+  const [chapterData, setChapterData] = useState<IChapter[]>([]);
 
   useEffect(() => {
     if (!props.new) {
-      storyService.getStoryByUrl(props.url).then((serverStory) => {
+      storyService.getStory(props.id).then((serverStory) => {
         setStoryData(serverStory);
-        if (serverStory.chapters.length > 0) {
-          setEditedTitle(serverStory.chapters[currentChapter].title);
-          setEditedText(serverStory.chapters[currentChapter].text);
-        } else {
-          navigate("../new");
+        if (serverStory.id) {
+          storyService.getChapters(props.id).then((serverChapters) => {
+            setChapterData(serverChapters);
+            if (serverChapters.length > 0) {
+              setEditedTitle(serverChapters[currentChapter].title);
+              setEditedText(serverChapters[currentChapter].text);
+            } else {
+              navigate("../new");
+            }
+          });
         }
       });
     } else {
       setEditedTitle("");
       setEditedText("");
     }
-  }, [props.url, props.new, navigate, currentChapter]);
+  }, [props.id, props.new, navigate, currentChapter]);
 
   const handleSetCurrentChapter = (val: number, refresh: boolean = false) => {
-    if (storyData.chapters[val]) {
+    if (chapterData[val]) {
       navigate(`../` + String(val + 1));
     }
     // This is a workaround for having the page navigate to the same chapter number after deleting a chapter.
@@ -62,7 +69,8 @@ function ChapterEdit(props: { url: string; new?: boolean }) {
   const handleEdit = (event: FormEvent) => {
     event.preventDefault();
     adminService
-      .updateChapter(storyData.id, currentChapter, {
+      .updateChapter(chapterData[currentChapter].id, {
+        id: "",
         title: editedTitle,
         text: editedText,
       })
@@ -77,7 +85,7 @@ function ChapterEdit(props: { url: string; new?: boolean }) {
     event.preventDefault();
     setShowDelete(false);
     adminService
-      .deleteChapter(storyData.id, currentChapter)
+      .deleteChapter(chapterData[currentChapter].id)
       .then((response) => {
         console.log(response.status);
         setStoryData(response.data);
@@ -92,21 +100,21 @@ function ChapterEdit(props: { url: string; new?: boolean }) {
     event.preventDefault();
     adminService
       .createChapter(storyData.id, {
+        id: "",
         title: editedTitle,
         text: editedText,
       })
       .then((response) => {
         console.log(response.status);
         setStoryData(response.data);
-        console.log(storyData.chapters.length);
         // Not going through the usual handleSetCurrentChapter since it has the old chapter.length (I think anyway)
-        navigate("../" + (storyData.chapters.length + 1));
+        navigate("../" + (chapterData.length + 1));
       });
   };
 
   if (
     !storyData ||
-    (!props.new && !storyData.chapters[currentChapter]) ||
+    (!props.new && !chapterData[currentChapter]) ||
     isStringChapter
   ) {
     return <NotFound />;
@@ -128,7 +136,7 @@ function ChapterEdit(props: { url: string; new?: boolean }) {
         </div>
         <h2>Edit chapter</h2>
         <div className="chapter-select">
-          {storyData?.chapters.map((_chapter: IChapter, index: number) => {
+          {chapterData.map((_chapter: IChapter, index: number) => {
             return (
               <ChapterButton
                 key={index}
