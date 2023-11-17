@@ -3,11 +3,11 @@ import "./Library.css";
 import { AdminContext } from "../index";
 import { Link, NavLink } from "react-router-dom";
 import storyService from "../storyService";
-import { IStoryLink } from "../types";
+import { IDBStory } from "../types";
 
 function Library() {
   const admin = useContext(AdminContext);
-  const [stories, setStories] = useState<IStoryLink[]>([]);
+  const [stories, setStories] = useState<IDBStory[]>([]);
 
   useEffect(() => {
     storyService.getStoryList().then((serverStories) => {

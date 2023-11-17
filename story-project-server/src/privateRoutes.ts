@@ -1,80 +1,61 @@
 import express from "express";
 import "dotenv/config";
-import { isChapter, isStory, setStories, stories } from "./data";
+import dao from "./dao";
 
 const router = express.Router();
 
-// Chapters
-router.put("/:id/:chapter", (req, res) => {
-  if (isChapter(req.body)) {
-    const modifiedStory = stories.filter(
-      (story) => story.id === req.params.id
-    )[0];
-    modifiedStory.chapters[Number(req.params.chapter)] = req.body;
-    const changedStories = stories.map((story) =>
-      story.id === req.params.id ? modifiedStory : story
-    );
-    setStories(changedStories);
-    res.status(200).send(modifiedStory);
-  }
+// Stories private
+
+// PUT
+router.put("/story/:id", async (req, res) => {
+  const result = await dao.updateStory(
+    req.params.id,
+    req.body.title,
+    req.body.icon,
+    req.body.url,
+    req.body.visible
+  );
+  res.send(result);
 });
 
-router.post("/:id/new", (req, res) => {
-  if (isChapter(req.body)) {
-    const modifiedStory = stories.filter(
-      (story) => story.id === req.params.id
-    )[0];
-    modifiedStory.chapters.push(req.body);
-    const changedStories = stories.map((story) =>
-      story.id === req.params.id ? modifiedStory : story
-    );
-    setStories(changedStories);
-    res.status(201).send(modifiedStory);
-  }
+router.put("/chapters/:id", async (req, res) => {
+  const result = await dao.updateChapter(
+    req.params.id,
+    req.body.title,
+    req.body.text
+  );
+  res.send(result);
 });
 
-router.delete("/:id/:chapter", (req, res) => {
-  const storyToEdit = stories.find((story) => story.id === req.params.id);
-  if (storyToEdit && storyToEdit.chapters[Number(req.params.chapter)]) {
-    const modifiedStory = stories.filter(
-      (story) => story.id === req.params.id
-    )[0];
-    modifiedStory.chapters.splice(Number(req.params.chapter), 1);
-    const changedStories = stories.map((story) =>
-      story.id === req.params.id ? modifiedStory : story
-    );
-    setStories(changedStories);
-    res.status(204).send(modifiedStory);
-  }
+// POST
+router.post("/story", async (req, res) => {
+  const result = await dao.createStory(
+    req.body.title,
+    req.body.icon,
+    req.body.url,
+    req.body.visible
+  );
+  res.send(result);
 });
 
-// Stories
-router.put("/:id", (req, res) => {
-  if (isStory(req.body)) {
-    const modifiedStories = stories.map((story) =>
-      story.id === req.params.id ? req.body : story
-    );
-    setStories(modifiedStories);
-    res.status(200).send(req.body);
-  }
+router.post("/chapters/:story_id", async (req, res) => {
+  const result = await dao.createChapter(
+    req.params.story_id,
+    req.body.title,
+    req.body.text
+  );
+  res.send(result);
 });
 
-router.post("/new", (req, res) => {
-  if (isStory(req.body)) {
-    setStories([...stories, req.body]);
-    res.status(201).send(req.body);
-  }
+// DELETE
+router.delete("/story/:id", async (req, res) => {
+  const result = await dao.deleteStory(req.params.id);
+  res.send(result);
 });
 
-router.delete("/:id", (req, res) => {
-  const storyToDelete = stories.find((story) => story.id === req.params.id);
-  if (storyToDelete) {
-    const changedStories = stories.filter(
-      (story) => story.id !== req.params.id
-    );
-    setStories(changedStories);
-    res.status(204).send();
-  }
+router.delete("/chapters/:id", async (req, res) => {
+  const result = await dao.deleteChapter(req.params.id);
+  res.send(result);
 });
 
 export { router as privateRouter };

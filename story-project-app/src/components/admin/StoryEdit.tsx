@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 function StoryEdit(props: {
-  url: string;
+  id: string;
   onChapterEdit: (set: boolean) => void;
   new?: boolean;
 }) {
@@ -20,17 +20,18 @@ function StoryEdit(props: {
   const [newUrl, setNewUrl] = useState("");
   const [storyData, setStoryData] = useState<IStory>({
     title: "",
-    chapters: [],
-    dateCreated: new Date(),
+    created_at: "",
     icon: "",
     id: "",
     url: "",
     visible: true,
+    modified_at: "",
+    created_by: "",
   });
 
   useEffect(() => {
     if (!props.new) {
-      storyService.getStoryByUrl(props.url).then((serverStory) => {
+      storyService.getStory(props.id).then((serverStory) => {
         setStoryData(serverStory);
         setNewTitle(serverStory.title);
         setNewUrl(serverStory.url);
@@ -40,7 +41,7 @@ function StoryEdit(props: {
       setNewIcon("");
       setNewUrl("");
     }
-  }, [props.url, props.new]);
+  }, [props.id, props.new]);
 
   const handleEdit = (event: FormEvent) => {
     event.preventDefault();
@@ -54,7 +55,7 @@ function StoryEdit(props: {
       .then((response) => {
         console.log(response.status);
         setStoryData(response.data);
-        navigate(`../${response.data.url}`);
+        navigate(`../${newUrl}`);
         navigate(0);
       });
   };
@@ -64,16 +65,17 @@ function StoryEdit(props: {
     adminService
       .createStory({
         title: newTitle,
-        chapters: [],
-        dateCreated: new Date(),
+        created_at: "",
         icon: newIcon,
         id: uuidv4(),
         url: newUrl,
         visible: false,
+        created_by: "",
+        modified_at: "",
       })
       .then((response) => {
         console.log(response.status);
-        navigate(`../${response.data.url}`);
+        navigate(`../${newUrl}`);
         navigate(0);
       });
   };
