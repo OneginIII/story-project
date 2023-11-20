@@ -3,7 +3,7 @@ import ChapterButton from "./ChapterButton";
 import "./Content.css";
 import { useNavigate, useParams } from "react-router-dom";
 import NotFound from "../NotFound";
-import storyService from "../storyService";
+import storyService, { serverUrl } from "../storyService";
 import { IChapter, IStory } from "../types";
 
 function StoryContent(props: { id: string }) {
@@ -68,7 +68,7 @@ function StoryContent(props: { id: string }) {
   return (
     <div className="content">
       {storyData.icon !== "" && currentChapter === 0 && (
-        <img className="content-icon" src="/icons/night-icon.svg" />
+        <img className="content-icon" src={`${serverUrl}/${storyData.icon}`} />
       )}
       <h2>{storyData?.title}</h2>
       <div className="chapter-select">

@@ -16,7 +16,8 @@ function StoryEdit(props: {
   const navigate = useNavigate();
   const [showDelete, setShowDelete] = useState(false);
   const [newTitle, setNewTitle] = useState("");
-  const [newIcon, setNewIcon] = useState("");
+  const [newIcon, setNewIcon] = useState<File>();
+  const [uploadMessage, setUploadMessage] = useState("");
   const [newUrl, setNewUrl] = useState("");
   const [newVisibility, setNewVisibility] = useState(true);
   const [storyData, setStoryData] = useState<IStory>({
@@ -29,6 +30,7 @@ function StoryEdit(props: {
     modified_at: "",
     created_by: "",
   });
+  const [deleteIcon, setDeleteIcon] = useState(false);
 
   useEffect(() => {
     if (!props.new) {
@@ -40,19 +42,43 @@ function StoryEdit(props: {
       });
     } else {
       setNewTitle("");
-      setNewIcon("");
+      setNewIcon(undefined);
       setNewUrl("");
       setNewVisibility(true);
     }
   }, [props.id, props.new]);
 
-  const handleEdit = (event: FormEvent) => {
+  const handleIconUpload = async () => {
+    let newIconPath = storyData.icon;
+    if (deleteIcon) {
+      return "";
+    }
+    if (newIcon) {
+      setUploadMessage("Uploading...");
+      await adminService
+        .uploadIcon(storyData.id, newIcon)
+        .then((response) => {
+          newIconPath = response.data;
+          setUploadMessage("Upload succesful!");
+        })
+        .catch((err) => {
+          console.error(err);
+          setUploadMessage("Upload failed!");
+        });
+    }
+    return newIconPath;
+  };
+
+  const handleEdit = async (event: FormEvent) => {
     event.preventDefault();
+    if (deleteIcon) {
+      adminService.deleteIcon(storyData.icon);
+    }
     adminService
       .updateStory(storyData.id, {
         ...storyData,
         title: newTitle,
-        icon: newIcon,
+        icon: await handleIconUpload(),
         url: newUrl,
         visible: newVisibility,
       })
@@ -60,17 +86,17 @@ function StoryEdit(props: {
         console.log(response.status);
         setStoryData(response.data);
         navigate(`../${newUrl}`);
-        navigate(0);
+        // navigate(0);
       });
   };
 
-  const handleCreate = (event: FormEvent) => {
+  const handleCreate = async (event: FormEvent) => {
     event.preventDefault();
     adminService
       .createStory({
         title: newTitle,
         created_at: "",
-        icon: newIcon,
+        icon: await handleIconUpload(),
         id: uuidv4(),
         url: newUrl,
         visible: false,
@@ -95,27 +121,64 @@ function StoryEdit(props: {
 
   return (
     <>
-      <form className="edit" onSubmit={props.new ? handleCreate : handleEdit}>
+      <form
+        className="edit"
+        onSubmit={props.new ? handleCreate : handleEdit}
+        encType="multipart/form-data"
+      >
         <h2>{props.new ? "Create story" : "Edit story"}</h2>
         <label htmlFor="title">Title</label>
         <input
           type="text"
+          name="title"
           id="title"
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
         />
         <div style={{ marginBottom: "0" }}>
           <label htmlFor="icon">Icon</label>
-          <input
-            type="file"
-            id="icon"
-            value={newIcon}
-            onChange={(e) => setNewIcon(e.target.value)}
-          />
+          <div style={{ display: "flex", alignItems: "baseline" }}>
+            <input
+              type="file"
+              name="icon"
+              id="icon"
+              onChange={(e) =>
+                setNewIcon(e.target.files ? e.target.files[0] : undefined)
+              }
+              accept=".svg"
+              style={{ flex: "1 1" }}
+            />
+            <span
+              style={{
+                flex: "1 1",
+                fontSize: "14pt",
+                fontStyle: "italic",
+              }}
+            >
+              {uploadMessage}
+            </span>
+            {storyData.icon && (
+              <div>
+                <label htmlFor="deleteIcon" style={{ color: "#E63333" }}>
+                  Delete current icon
+                </label>
+                <input
+                  id="deleteIcon"
+                  name="deleteIcon"
+                  type="checkbox"
+                  onChange={(e) => setDeleteIcon(e.target.checked)}
+                  checked={deleteIcon}
+                  className="btn-danger"
+                  style={{ width: "max-content" }}
+                />
+              </div>
+            )}
+          </div>
         </div>
         <label htmlFor="url">URL</label>
         <input
           type="text"
+          name="url"
           id="url"
           value={newUrl}
           onChange={(e) => setNewUrl(e.target.value)}
@@ -125,6 +188,7 @@ function StoryEdit(props: {
             Public visibility
           </label>
           <input
+            name="visibility"
             id="visibility"
             type="checkbox"
             checked={newVisibility}

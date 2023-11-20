@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import "./Library.css";
 import { AdminContext } from "../index";
 import { Link, NavLink } from "react-router-dom";
-import storyService from "../storyService";
+import storyService, { serverUrl } from "../storyService";
 import { IStory } from "../types";
 
 function Library() {
@@ -44,7 +44,7 @@ function Library() {
             >
               <div
                 className="story-icon-bg"
-                style={{ backgroundImage: "url(" + story.icon + ")" }}
+                style={{ backgroundImage: `url(${serverUrl}/${story.icon})` }}
               />
               {story.title}
               {admin && (
