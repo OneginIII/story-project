@@ -29,6 +29,14 @@ const uploadIcon = (id: string, icon: File) => {
   return request.then((response) => response);
 };
 
+const deleteIcon = (path: string) => {
+  const pathSubstrings = path.split("/");
+  const request = axios.delete(
+    `${serverUrl}/icon/${pathSubstrings[pathSubstrings.length - 1]}`
+  );
+  return request.then((response) => response);
+};
+
 // Chapter
 const updateChapter = (id: string, chapter: IChapter) => {
   const request = axios.put(`${serverUrl}/chapters/${id}`, chapter);
@@ -53,4 +61,5 @@ export default {
   createStory,
   deleteStory,
   uploadIcon,
+  deleteIcon,
 };

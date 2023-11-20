@@ -30,6 +30,7 @@ function StoryEdit(props: {
     modified_at: "",
     created_by: "",
   });
+  const [deleteIcon, setDeleteIcon] = useState(false);
 
   useEffect(() => {
     if (!props.new) {
@@ -49,6 +50,9 @@ function StoryEdit(props: {
 
   const handleIconUpload = async () => {
     let newIconPath = storyData.icon;
+    if (deleteIcon) {
+      return "";
+    }
     if (newIcon) {
       setUploadMessage("Uploading...");
       await adminService
@@ -67,6 +71,9 @@ function StoryEdit(props: {
 
   const handleEdit = async (event: FormEvent) => {
     event.preventDefault();
+    if (deleteIcon) {
+      adminService.deleteIcon(storyData.icon);
+    }
     adminService
       .updateStory(storyData.id, {
         ...storyData,
@@ -79,7 +86,7 @@ function StoryEdit(props: {
         console.log(response.status);
         setStoryData(response.data);
         navigate(`../${newUrl}`);
-        navigate(0);
+        // navigate(0);
       });
   };
 
@@ -130,7 +137,7 @@ function StoryEdit(props: {
         />
         <div style={{ marginBottom: "0" }}>
           <label htmlFor="icon">Icon</label>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "baseline" }}>
             <input
               type="file"
               name="icon"
@@ -139,16 +146,33 @@ function StoryEdit(props: {
                 setNewIcon(e.target.files ? e.target.files[0] : undefined)
               }
               accept=".svg"
+              style={{ flex: "1 1" }}
             />
             <span
               style={{
-                flex: "1 1 100%",
+                flex: "1 1",
                 fontSize: "14pt",
                 fontStyle: "italic",
               }}
             >
               {uploadMessage}
             </span>
+            {storyData.icon && (
+              <div>
+                <label htmlFor="deleteIcon" style={{ color: "#E63333" }}>
+                  Delete current icon
+                </label>
+                <input
+                  id="deleteIcon"
+                  name="deleteIcon"
+                  type="checkbox"
+                  onChange={(e) => setDeleteIcon(e.target.checked)}
+                  checked={deleteIcon}
+                  className="btn-danger"
+                  style={{ width: "max-content" }}
+                />
+              </div>
+            )}
           </div>
         </div>
         <label htmlFor="url">URL</label>

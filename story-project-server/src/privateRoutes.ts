@@ -2,12 +2,15 @@ import express from "express";
 import "dotenv/config";
 import dao from "./dao";
 import multer from "multer";
+import fs from "fs";
+
+const iconPath = "public/icons";
 
 const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/icons");
+    cb(null, iconPath);
   },
   filename: function (req, file, cb) {
     cb(null, req.params.id + ".svg");
@@ -75,6 +78,16 @@ router.delete("/story/:id", async (req, res) => {
 router.delete("/chapters/:id", async (req, res) => {
   const result = await dao.deleteChapter(req.params.id);
   res.send(result);
+});
+
+router.delete("/icon/:name", async (req, res) => {
+  console.log(req.params.name);
+  fs.access(`${iconPath}/${req.params.name}`, () => {
+    fs.unlink(`${iconPath}/${req.params.name}`, () => {
+      res.status(200).send();
+      return;
+    });
+  });
 });
 
 export { router as privateRouter };
