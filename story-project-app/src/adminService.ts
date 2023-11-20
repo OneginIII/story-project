@@ -6,17 +6,27 @@ const serverUrl = import.meta.env.VITE_SERVER_URL + "/admin";
 // Story
 const updateStory = (id: string, story: IStory) => {
   const request = axios.put(`${serverUrl}/story/${id}`, story);
-  return request.then((request) => request);
+  return request.then((response) => response);
 };
 
 const createStory = (story: IStory) => {
   const request = axios.post(`${serverUrl}/story`, story);
-  return request.then((request) => request);
+  return request.then((response) => response);
 };
 
 const deleteStory = (id: string) => {
   const request = axios.delete(`${serverUrl}/story/${id}`);
-  return request.then((request) => request);
+  return request.then((response) => response);
+};
+
+const uploadIcon = (id: string, icon: File) => {
+  const formData = new FormData();
+  formData.append("icon", icon);
+  const config = {
+    headers: { "content-type": "multipart/form-data" },
+  };
+  const request = axios.post(`${serverUrl}/story/${id}/icon`, formData, config);
+  return request.then((response) => response);
 };
 
 // Chapter
@@ -42,4 +52,5 @@ export default {
   updateStory,
   createStory,
   deleteStory,
+  uploadIcon,
 };

@@ -1,8 +1,19 @@
 import express from "express";
 import "dotenv/config";
 import dao from "./dao";
+import multer from "multer";
 
 const router = express.Router();
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/icons");
+  },
+  filename: function (req, file, cb) {
+    cb(null, req.params.id + ".svg");
+  },
+});
+const upload = multer({ storage: storage });
 
 // Stories private
 
@@ -36,6 +47,14 @@ router.post("/story", async (req, res) => {
     req.body.visible
   );
   res.send(result);
+});
+
+router.post("/story/:id/icon", upload.single("icon"), async (req, res) => {
+  if (req.file) {
+    res.send(`${req.file.destination}/${req.file.filename}`);
+    return;
+  }
+  res.send("");
 });
 
 router.post("/chapters/:story_id", async (req, res) => {

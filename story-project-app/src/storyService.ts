@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const serverUrl = import.meta.env.VITE_SERVER_URL;
+export const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const getStoryList = () => {
   const request = axios.get(`${serverUrl}/stories`);
@@ -21,4 +21,5 @@ export default {
   getStory,
   getStoryList,
   getChapters,
+  serverUrl,
 };

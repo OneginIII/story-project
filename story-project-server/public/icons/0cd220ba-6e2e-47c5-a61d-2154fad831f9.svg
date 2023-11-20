@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="128"
+   height="128"
+   viewBox="0 0 33.866666 33.866666"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   sodipodi:docname="test_icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#1e1e1e"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#262626"
+     inkscape:document-units="mm"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="48.967144"
+     inkscape:cy="61.695066"
+     inkscape:window-width="1920"
+     inkscape:window-height="1177"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect1"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:1.13321;stroke-linejoin:round"
+       d="M 4.2333333 0 C 1.8880691 0 2.6202161e-17 1.8880691 0 4.2333333 L 0 29.633333 C 0 31.978598 1.8880691 33.866667 4.2333333 33.866667 L 29.633333 33.866667 C 31.978598 33.866667 33.866667 31.978598 33.866667 29.633333 L 33.866667 4.2333333 C 33.866667 1.8880691 31.978598 2.6202161e-17 29.633333 0 L 4.2333333 0 z M 4.2333333 2.1166667 L 29.633333 2.1166667 C 30.805965 2.1166667 31.75 3.0607012 31.75 4.2333333 L 31.75 29.633333 C 31.75 30.805965 30.805965 31.75 29.633333 31.75 L 4.2333333 31.75 C 3.0607012 31.75 2.1166667 30.805965 2.1166667 29.633333 L 2.1166667 4.2333333 C 2.1166667 3.0607012 3.0607012 2.1166667 4.2333333 2.1166667 z " />
+    <text
+       xml:space="preserve"
+       style="font-size:28.5193px;font-family:Estonia;-inkscape-font-specification:Estonia;text-align:center;text-anchor:middle;fill:#4d3b2c;fill-opacity:1;stroke-width:1.71117;stroke-linejoin:round"
+       x="17.874739"
+       y="25.775988"
+       id="text2"><tspan
+         sodipodi:role="line"
+         id="tspan2"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Crimson Text';-inkscape-font-specification:'Crimson Text Bold';fill:#ffffff;fill-opacity:1;stroke-width:1.71117"
+         x="17.874739"
+         y="25.775988">?</tspan></text>
+  </g>
+</svg>
