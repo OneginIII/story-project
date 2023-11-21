@@ -13,10 +13,15 @@ const updateChapter =
 const createStory =
   "INSERT INTO stories (title, icon, url, visible, created_at, modified_at) VALUES ($1, $2, $3, $4, NOW(), NOW());";
 const createChapter =
-  "INSERT INTO chapters (story_id, title, text, created_at, modified_at) VALUES($1, $2, $3, NOW(), NOW());";
+  "INSERT INTO chapters (story_id, title, text, created_at, modified_at) VALUES ($1, $2, $3, NOW(), NOW());";
 
+// DELETE
 const deleteStory = "DELETE FROM stories WHERE id = $1;";
 const deleteChapter = "DELETE FROM chapters WHERE id = $1;";
+
+// Authenticate
+const getUser = "SELECT * FROM users WHERE username = $1;";
+const createUser = "INSERT INTO users (username, password) VALUES ($1, $2);";
 
 export {
   getStories,
@@ -28,4 +33,6 @@ export {
   createChapter,
   deleteStory,
   deleteChapter,
+  getUser,
+  createUser,
 };

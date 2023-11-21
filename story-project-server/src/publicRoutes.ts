@@ -2,9 +2,12 @@ import express from "express";
 import fs from "fs";
 import "dotenv/config";
 import dao from "./dao";
+import jwt from "jsonwebtoken";
+import argon2 from "argon2";
 
 const router = express.Router();
 const staticPagesPath = String(process.env.STATIC_PAGE_LOCATION);
+const SECRET = process.env.SECRET as jwt.Secret;
 
 // Default
 
@@ -52,6 +55,37 @@ router.get("/page/:name", (req, res) => {
       res.send(data.toString());
     });
   } else res.status(500).send();
+});
+
+// Authenticate
+
+router.post("/login", async (req, res) => {
+  const result = await dao.getUser(req.body.username);
+  if (result.rowCount) {
+    const user = result.rows[0];
+    const verify = await argon2.verify(user.password, req.body.password);
+    if (verify) {
+      const token = jwt.sign({ username: user.username }, SECRET, {
+        expiresIn: "1d",
+      });
+      res.status(200).send(token);
+    } else {
+      // res.status(401).send("Unauthorized");
+      res.status(204).send();
+    }
+  } else {
+    // res.status(404).send("User not found");
+    res.status(204).send();
+  }
+});
+
+router.post("/register", async (req, res) => {
+  const newUser = {
+    username: req.body.username,
+    password: await argon2.hash(req.body.password),
+  };
+  await dao.createUser(newUser.username, newUser.password);
+  res.status(200).send("Register complete");
 });
 
 export { router as publicRouter };

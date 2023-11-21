@@ -1,13 +1,12 @@
-import { useContext } from "react";
-import { AdminContext } from "../index";
 import "./Header.css";
 import { Link } from "react-router-dom";
+import { useAuth } from "../loginService";
 
 function Header() {
-  const admin = useContext(AdminContext);
+  const auth = useAuth();
   return (
     <header>
-      {admin && <h3>Admin mode</h3>}
+      {auth?.token && <h3>Admin mode</h3>}
       <Link to={"/"}>
         <h1>Story Project</h1>
       </Link>

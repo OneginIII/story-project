@@ -1,16 +1,15 @@
-import { useContext } from "react";
 import "./Library.css";
-import { AdminContext } from "../index";
 import { Link, NavLink } from "react-router-dom";
 import { serverUrl } from "../storyService";
 import { IStory } from "../types";
+import { useAuth } from "../loginService";
 
 function Library(props: { stories: IStory[] }) {
-  const admin = useContext(AdminContext);
+  const auth = useAuth();
 
   return (
     <div className="library">
-      {admin && (
+      {auth?.token && (
         <Link
           style={{ fontStyle: "italic" }}
           to={"new"}
@@ -24,7 +23,7 @@ function Library(props: { stories: IStory[] }) {
         </Link>
       )}
       {props.stories.map((story) => {
-        if (admin || story.visible) {
+        if (auth?.token || story.visible) {
           return (
             <NavLink
               to={`${story.url}/`}
@@ -40,7 +39,7 @@ function Library(props: { stories: IStory[] }) {
                 style={{ backgroundImage: `url(${serverUrl}/${story.icon})` }}
               />
               {story.title}
-              {admin && (
+              {auth?.token && (
                 <img
                   className={
                     story.visible ? "visible-icon" : "visible-icon icon-hidden"

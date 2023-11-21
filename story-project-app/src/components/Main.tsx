@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useContext } from "react";
 import Library from "./Library";
 import "./Main.css";
 import Menu from "./Menu";
 import StaticContent from "./StaticContent";
 import StoryContent from "./StoryContent";
-import { AdminContext } from "../index";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import NotFound from "../NotFound";
 import ChapterEdit from "./admin/ChapterEdit";
@@ -16,6 +14,7 @@ import { homePage } from "../App";
 import Admin from "./Admin";
 import { IStory } from "../types";
 import storyService from "../storyService";
+import { useAuth } from "../loginService";
 
 function Main() {
   const [pages, setPages] = useState<string[]>([]);
@@ -38,12 +37,12 @@ function Main() {
   };
 
   const navigate = useNavigate();
-  const admin = useContext(AdminContext);
+  const auth = useAuth();
 
   return (
     <main>
       <div className="sidebar">
-        {!admin && <Menu />}
+        {!auth?.token && <Menu />}
         <Library stories={stories} />
       </div>
       <Routes>
@@ -54,21 +53,21 @@ function Main() {
               <Route
                 path=":chapter?"
                 element={
-                  admin ? (
+                  auth?.token ? (
                     <ChapterEdit id={story.id} />
                   ) : (
                     <StoryContent id={story.id} />
                   )
                 }
               />
-              {admin && (
+              {auth?.token && (
                 <Route
                   path="new"
                   element={<ChapterEdit id={story.url} new />}
                 />
               )}
             </Route>
-            {admin && (
+            {auth?.token && (
               <>
                 <Route
                   path={`edit/${story.url}`}
@@ -92,7 +91,7 @@ function Main() {
           />
         ))}
         <Route path="settings" element={<Settings />} />
-        {admin && (
+        {auth?.token && (
           <Route
             path="new"
             element={
@@ -105,8 +104,8 @@ function Main() {
             }
           />
         )}
-        {admin ? (
-          <Route path="/" element={<Admin />} />
+        {auth?.token ? (
+          <Route path="/admin" element={<Admin />} />
         ) : (
           <Route path="/" element={<StaticContent name={homePage} />} />
         )}
