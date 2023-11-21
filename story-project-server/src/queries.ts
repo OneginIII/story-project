@@ -21,7 +21,8 @@ const deleteChapter = "DELETE FROM chapters WHERE id = $1;";
 
 // Authenticate
 const getUser = "SELECT * FROM users WHERE username = $1;";
-const createUser = "INSERT INTO users (username, password) VALUES ($1, $2);";
+const createUser =
+  "INSERT INTO users (username, password, created_at) VALUES ($1, $2, NOW());";
 
 export {
   getStories,
