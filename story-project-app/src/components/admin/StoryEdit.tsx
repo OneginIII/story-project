@@ -12,6 +12,7 @@ function StoryEdit(props: {
   id: string;
   onChapterEdit: (set: boolean) => void;
   new?: boolean;
+  refreshStories: () => void;
 }) {
   const navigate = useNavigate();
   const [showDelete, setShowDelete] = useState(false);
@@ -86,7 +87,7 @@ function StoryEdit(props: {
         console.log(response.status);
         setStoryData(response.data);
         navigate(`../${newUrl}`);
-        // navigate(0);
+        props.refreshStories();
       });
   };
 
@@ -106,7 +107,7 @@ function StoryEdit(props: {
       .then((response) => {
         console.log(response.status);
         navigate(`../${newUrl}`);
-        navigate(0);
+        props.refreshStories();
       });
   };
 
@@ -115,7 +116,7 @@ function StoryEdit(props: {
     adminService.deleteStory(storyData.id).then((response) => {
       console.log(response.status);
       navigate(`../`);
-      navigate(0);
+      props.refreshStories();
     });
   };
 

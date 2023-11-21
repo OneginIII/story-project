@@ -1,19 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import "./Library.css";
 import { AdminContext } from "../index";
 import { Link, NavLink } from "react-router-dom";
-import storyService, { serverUrl } from "../storyService";
+import { serverUrl } from "../storyService";
 import { IStory } from "../types";
 
-function Library() {
+function Library(props: { stories: IStory[] }) {
   const admin = useContext(AdminContext);
-  const [stories, setStories] = useState<IStory[]>([]);
-
-  useEffect(() => {
-    storyService.getStoryList().then((serverStories) => {
-      setStories(serverStories);
-    });
-  }, []);
 
   return (
     <div className="library">
@@ -30,7 +23,7 @@ function Library() {
           + Add New Story
         </Link>
       )}
-      {stories.map((story) => {
+      {props.stories.map((story) => {
         if (admin || story.visible) {
           return (
             <NavLink

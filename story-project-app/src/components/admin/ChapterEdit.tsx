@@ -12,11 +12,13 @@ import NotFound from "../../NotFound";
 function ChapterEdit(props: { id: string; new?: boolean }) {
   const navigate = useNavigate();
   const { chapter } = useParams();
-  const currentChapter = Number(chapter) ? Number(chapter) - 1 : 0;
+  // const currentChapter = Number(chapter) ? Number(chapter) - 1 : 0;
+  const [currentChapter, setCurrentChapter] = useState(
+    Number(chapter) ? Number(chapter) - 1 : 0
+  );
   const isStringChapter = chapter && !Number(chapter);
   const [showDelete, setShowDelete] = useState(false);
-  const [editedTitle, setEditedTitle] = useState("");
-  const [editedText, setEditedText] = useState("");
+  const [chapterData, setChapterData] = useState<IChapter[]>([]);
   const [storyData, setStoryData] = useState<IStory>({
     title: "",
     created_at: "",
@@ -27,9 +29,15 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
     modified_at: "",
     created_by: "",
   });
-  const [chapterData, setChapterData] = useState<IChapter[]>([]);
+  const [editedTitle, setEditedTitle] = useState(
+    chapterData[currentChapter] ? chapterData[currentChapter].title : ""
+  );
+  const [editedText, setEditedText] = useState(
+    chapterData[currentChapter] ? chapterData[currentChapter].text : ""
+  );
 
   useEffect(() => {
+    setCurrentChapter(Number(chapter) ? Number(chapter) - 1 : 0);
     if (!props.new) {
       storyService.getStory(props.id).then((serverStory) => {
         setStoryData(serverStory);
@@ -49,16 +57,15 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
       setEditedTitle("");
       setEditedText("");
     }
-  }, [props.id, props.new, navigate, currentChapter]);
+  }, [props.id, props.new, navigate, currentChapter, chapter]);
 
-  const handleSetCurrentChapter = (val: number, refresh: boolean = false) => {
+  const handleSetCurrentChapter = (val: number, empty?: boolean) => {
     if (chapterData[val]) {
+      setCurrentChapter(val);
       navigate(`../` + String(val + 1));
     }
-    // This is a workaround for having the page navigate to the same chapter number after deleting a chapter.
-    // Since the route doesn't change the page doesn't redraw and gets stuck with the <NotFound> component.
-    if (refresh) {
-      navigate(0);
+    if (empty) {
+      navigate(`../`);
     }
   };
 
@@ -76,7 +83,6 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
       })
       .then((response) => {
         console.log(response.status);
-        setStoryData(response.data);
         handleSetCurrentChapter(currentChapter);
       });
   };
@@ -88,10 +94,10 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
       .deleteChapter(chapterData[currentChapter].id)
       .then((response) => {
         console.log(response.status);
-        setStoryData(response.data);
         handleSetCurrentChapter(
           Math.max(currentChapter - 1, 0),
-          currentChapter === 0
+          // This is a hack to fix the refresh on chapter delete 0 fix
+          currentChapter === 0 && chapter !== undefined
         );
       });
   };
@@ -106,8 +112,6 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
       })
       .then((response) => {
         console.log(response.status);
-        setStoryData(response.data);
-        // Not going through the usual handleSetCurrentChapter since it has the old chapter.length (I think anyway)
         navigate("../" + (chapterData.length + 1));
       });
   };

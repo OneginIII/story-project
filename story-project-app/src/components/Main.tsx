@@ -28,10 +28,14 @@ function Main() {
   }, []);
 
   useEffect(() => {
+    refreshStories();
+  }, []);
+
+  const refreshStories = () => {
     storyService.getStoryList().then((serverStories) => {
       setStories(serverStories);
     });
-  }, []);
+  };
 
   const navigate = useNavigate();
   const admin = useContext(AdminContext);
@@ -40,7 +44,7 @@ function Main() {
     <main>
       <div className="sidebar">
         {!admin && <Menu />}
-        <Library />
+        <Library stories={stories} />
       </div>
       <Routes>
         {stories.map((story) => (
@@ -72,6 +76,7 @@ function Main() {
                     <StoryEdit
                       id={story.id}
                       onChapterEdit={() => navigate(-1)}
+                      refreshStories={refreshStories}
                     />
                   }
                 />
@@ -90,7 +95,14 @@ function Main() {
         {admin && (
           <Route
             path="new"
-            element={<StoryEdit id="" onChapterEdit={() => null} new />}
+            element={
+              <StoryEdit
+                id=""
+                onChapterEdit={() => null}
+                new
+                refreshStories={refreshStories}
+              />
+            }
           />
         )}
         {admin ? (
