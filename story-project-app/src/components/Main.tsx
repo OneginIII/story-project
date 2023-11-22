@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Library from "./Library";
 import "./Main.css";
 import Menu from "./Menu";
@@ -14,7 +14,7 @@ import { homePage } from "../App";
 import Admin from "./Admin";
 import { IStory } from "../types";
 import storyService from "../storyService";
-import { useAuth } from "../loginService";
+import { AdminContext } from "..";
 
 function Main() {
   const [pages, setPages] = useState<string[]>([]);
@@ -37,12 +37,12 @@ function Main() {
   };
 
   const navigate = useNavigate();
-  const auth = useAuth();
+  const admin = useContext(AdminContext);
 
   return (
     <main>
       <div className="sidebar">
-        {!auth?.token && <Menu />}
+        {!admin && <Menu />}
         <Library stories={stories} />
       </div>
       <Routes>
@@ -53,21 +53,21 @@ function Main() {
               <Route
                 path=":chapter?"
                 element={
-                  auth?.token ? (
+                  admin ? (
                     <ChapterEdit id={story.id} />
                   ) : (
                     <StoryContent id={story.id} />
                   )
                 }
               />
-              {auth?.token && (
+              {admin && (
                 <Route
                   path="new"
                   element={<ChapterEdit id={story.url} new />}
                 />
               )}
             </Route>
-            {auth?.token && (
+            {admin && (
               <>
                 <Route
                   path={`edit/${story.url}`}
@@ -91,7 +91,7 @@ function Main() {
           />
         ))}
         <Route path="settings" element={<Settings />} />
-        {auth?.token && (
+        {admin && (
           <Route
             path="new"
             element={
@@ -104,8 +104,8 @@ function Main() {
             }
           />
         )}
-        {auth?.token ? (
-          <Route path="/admin" element={<Admin />} />
+        {admin ? (
+          <Route path="/" element={<Admin />} />
         ) : (
           <Route path="/" element={<StaticContent name={homePage} />} />
         )}

@@ -70,7 +70,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
   };
 
   const handleStoryEdit = () => {
-    navigate(`/edit/${storyData.url}`);
+    navigate(`/admin/edit/${storyData.url}`);
   };
 
   const handleEdit = (event: FormEvent) => {
