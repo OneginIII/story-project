@@ -1,15 +1,16 @@
-import { useContext } from "react";
-import { AdminContext } from "../index";
 import "./Footer.css";
 import { Link } from "react-router-dom";
+import { useAuth } from "../loginService";
 
 function Footer(props: { onLogin?: (on: boolean) => void }) {
-  const admin = useContext(AdminContext);
+  const auth = useAuth();
   return (
     <footer>
       <p>
-        {admin ? (
-          <Link to="/">Log out</Link>
+        {auth?.token ? (
+          <Link onClick={() => auth.onLogout()} to="/">
+            Log out
+          </Link>
         ) : (
           <a
             className="link"

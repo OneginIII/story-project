@@ -56,7 +56,7 @@ function Modal(props: {
       ref={modalRef}
       onKeyDown={(e) => handleKeyDown(e)}
       className="modal"
-      onClick={handleBackgroundClose}
+      onMouseDown={handleBackgroundClose}
     >
       {props.children}
     </dialog>

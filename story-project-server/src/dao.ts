@@ -96,6 +96,17 @@ const deleteChapter = async (id: string) => {
   return result;
 };
 
+// Authenticate
+const getUser = async (username: string) => {
+  const result = await executeQuery(queries.getUser, [username]);
+  return result;
+};
+
+const createUser = async (username: string, password: string) => {
+  const result = await executeQuery(queries.createUser, [username, password]);
+  return result;
+};
+
 export default {
   getStories,
   getStory,
@@ -106,4 +117,6 @@ export default {
   createChapter,
   deleteStory,
   deleteChapter,
+  getUser,
+  createUser,
 };

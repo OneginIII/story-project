@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import "./Library.css";
-import { AdminContext } from "../index";
 import { Link, NavLink } from "react-router-dom";
 import { serverUrl } from "../storyService";
 import { IStory } from "../types";
+import { AdminContext } from "..";
 
 function Library(props: { stories: IStory[] }) {
   const admin = useContext(AdminContext);
