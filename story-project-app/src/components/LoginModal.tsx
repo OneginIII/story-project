@@ -72,7 +72,13 @@ function LoginModal(props: { onSuccesfulLogin: () => void }) {
         </button>
         <button type="submit">Log in</button>
       </div>
-      <div style={success ? { color: "#33E633" } : { color: "#E63333" }}>
+      <div
+        style={
+          success
+            ? { color: "#33E633 !important" }
+            : { color: "#E63333 !important" }
+        }
+      >
         <p style={{ textAlign: "center" }}>{loginMessage}</p>
       </div>
     </form>

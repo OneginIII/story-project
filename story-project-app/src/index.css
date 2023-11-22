@@ -7,18 +7,11 @@ html, body, #root {
 }
 
 body {
-  font-family: 'Crimson Text', serif;
-  background-color: #262626;
-  color: #E6E6E6;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overscroll-behavior: contain;
-}
-
-a, dialog {
-  color: #E6E6E6;
 }
 
 label, button, input, input::file-selector-button, textarea {
@@ -32,7 +25,6 @@ button, input::file-selector-button {
   background-color: #FFF0;
   transition: background-color 0.1s;
   border: 1px solid #FFF2;
-  color: #E6E6E6;
   padding: 0.5em 1em;
 }
 
@@ -56,7 +48,7 @@ button:hover {
 .btn-danger {
   background-color: #FFF0;
   border: 1px solid #F444;
-  color: #E63333;
+  color: #E63333 !important;
 }
 
 .btn-danger:hover {

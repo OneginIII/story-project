@@ -1,0 +1,15 @@
+.theme-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 1em;
+}
+
+.theme-buttons button {
+  margin: 0;
+}
+
+.theme-buttons .selected {
+  border-width: 2px;
+  font-weight: bold;
+}

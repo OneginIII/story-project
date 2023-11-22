@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App.tsx";
 import "./index.css";
 import AuthProvider from "./components/AuthProvider.tsx";
+import ThemeProvider from "./components/ThemeProvider.tsx";
 
 export const AdminContext = createContext(false);
 
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           path="*"
           element={
             <AuthProvider>
-              <App />
+              <ThemeProvider>
+                <App />
+              </ThemeProvider>
             </AuthProvider>
           }
         />
@@ -24,7 +27,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           element={
             <AdminContext.Provider value={true}>
               <AuthProvider>
-                <App />
+                <ThemeProvider>
+                  <App />
+                </ThemeProvider>
               </AuthProvider>
             </AdminContext.Provider>
           }
