@@ -16,7 +16,9 @@ const setToken = (token: string) => {
 
 // Story
 const updateStory = (id: string, story: IStory) => {
-  const request = axios.put(`${serverUrl}/story/${id}`, story, config);
+  const request = axios
+    .put(`${serverUrl}/story/${id}`, story, config)
+    .catch((reason) => reason);
   return request.then((response) => response);
 };
 
