@@ -27,11 +27,9 @@ export const authenticateAdmin = (
     if (req.username) {
       next();
     } else {
-      // return res.status(401).send("Requires authentication");
-      res.status(204).send();
+      return res.status(401).send("Requires authentication");
     }
   } catch (err) {
-    // return res.status(401).send("Invalid token");
-    res.status(204).send();
+    return res.status(401).send("Invalid token");
   }
 };

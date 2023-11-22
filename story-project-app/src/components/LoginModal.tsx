@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState, MouseEvent } from "react";
-import loginService, { useAuth } from "../loginService";
+import { useAuth } from "../loginService";
 
 function LoginModal(props: { onSuccesfulLogin: () => void }) {
   const auth = useAuth();
@@ -8,8 +8,8 @@ function LoginModal(props: { onSuccesfulLogin: () => void }) {
     username: "",
     password: "",
   });
-  const [loginFailed, setLoginFailed] = useState(false);
-  const [registered, setRegistered] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [loginMessage, setLoginMessage] = useState("");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -19,17 +19,32 @@ function LoginModal(props: { onSuccesfulLogin: () => void }) {
 
   const handleLoginSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    const loginResult = await auth?.onLogin(inputs.username, inputs.password);
-    if (loginResult) {
+    const result = await auth?.onLogin(inputs.username, inputs.password);
+    if (result && result[0]) {
+      setSuccess(true);
       props.onSuccesfulLogin();
+    } else if (result) {
+      setSuccess(false);
+      if (typeof result[1] === "string") {
+        setLoginMessage(result[1]);
+      }
     }
-    setLoginFailed(!loginResult);
   };
 
-  const handleRegister = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleRegister = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    loginService.register(inputs.username, inputs.password);
-    setRegistered(true);
+    const result = await auth?.onRegister(inputs.username, inputs.password);
+    if (result && result[0]) {
+      setSuccess(true);
+      if (typeof result[1] === "string") {
+        setLoginMessage(result[1]);
+      }
+    } else if (result) {
+      setSuccess(false);
+      if (typeof result[1] === "string") {
+        setLoginMessage(result[1]);
+      }
+    }
   };
 
   return (
@@ -57,14 +72,9 @@ function LoginModal(props: { onSuccesfulLogin: () => void }) {
         </button>
         <button type="submit">Log in</button>
       </div>
-      {loginFailed && (
-        <p style={{ color: "#E63333", textAlign: "center" }}>Login failed!</p>
-      )}
-      {registered && (
-        <p style={{ color: "#33E633", textAlign: "center" }}>
-          User registered!
-        </p>
-      )}
+      <div style={success ? { color: "#33E633" } : { color: "#E63333" }}>
+        <p style={{ textAlign: "center" }}>{loginMessage}</p>
+      </div>
     </form>
   );
 }

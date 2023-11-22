@@ -7,7 +7,7 @@ import Modal from "./components/Modal";
 import "./components/Modal.css";
 import LoginModal from "./components/LoginModal";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "./loginService";
+import loginService, { useAuth } from "./loginService";
 
 export const homePage = "Home";
 
@@ -18,12 +18,18 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === "/admin") {
-      if (!auth?.token) {
-        navigate("/");
+    const verify = async () => {
+      if (location.pathname.includes("/admin")) {
+        const response = await loginService.verify(
+          typeof auth?.token === "string" ? auth?.token : ""
+        );
+        if (response instanceof Error) {
+          navigate("/");
+        }
       }
-    }
-  }, [auth?.token, navigate, location]);
+    };
+    verify();
+  }, [auth?.token, navigate, location.pathname]);
 
   return (
     <div className="app">

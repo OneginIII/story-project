@@ -5,8 +5,15 @@ import adminService from "../adminService";
 
 export interface IAuthContext {
   token: object | null | string;
-  onLogin: (username: string, password: string) => boolean | Promise<boolean>;
+  onLogin: (
+    username: string,
+    password: string
+  ) => Promise<unknown[] | undefined>;
   onLogout: () => void;
+  onRegister: (
+    username: string,
+    password: string
+  ) => Promise<unknown[] | undefined>;
 }
 
 export const AuthContext = createContext<null | IAuthContext>(null);
@@ -22,26 +29,36 @@ function AuthProvider(props: { children: React.ReactNode }) {
   }, [token]);
 
   const handleLogin = async (username: string, password: string) => {
-    const newToken = await loginService.login(username, password);
-    if (typeof newToken === "string" && newToken.length > 0) {
-      setToken(newToken);
+    const response = await loginService.login(username, password);
+    if (response.status === 200) {
+      setToken(response.data);
       navigate("/admin");
-      localStorage.setItem("token", newToken);
-      return true;
-    } else {
-      return false;
+      localStorage.setItem("token", response.data);
+      return [true];
+    } else if (response) {
+      return [false, response?.response?.data];
+    }
+  };
+
+  const handleRegister = async (username: string, password: string) => {
+    const response = await loginService.register(username, password);
+    if (response.status === 200) {
+      return [true, response.data];
+    } else if (response) {
+      return [false, response?.response?.data];
     }
   };
 
   const handleLogout = async () => {
     setToken(null);
-    localStorage.setItem("token", "");
+    localStorage.removeItem("token");
   };
 
   const value: IAuthContext = {
     token: token,
     onLogin: handleLogin,
     onLogout: handleLogout,
+    onRegister: handleRegister,
   };
 
   return (

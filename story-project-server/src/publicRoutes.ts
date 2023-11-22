@@ -60,32 +60,53 @@ router.get("/page/:name", (req, res) => {
 // Authenticate
 
 router.post("/login", async (req, res) => {
-  const result = await dao.getUser(req.body.username);
-  if (result.rowCount) {
-    const user = result.rows[0];
-    const verify = await argon2.verify(user.password, req.body.password);
-    if (verify) {
-      const token = jwt.sign({ username: user.username }, SECRET, {
-        expiresIn: "1d",
-      });
-      res.status(200).send(token);
+  if (req.body.username.length > 0 && req.body.password.length > 0) {
+    const result = await dao.getUser(req.body.username);
+    if (result.rowCount) {
+      const user = result.rows[0];
+      const verify = await argon2.verify(user.password, req.body.password);
+      if (verify) {
+        const token = jwt.sign({ username: user.username }, SECRET, {
+          expiresIn: "1d",
+        });
+        res.status(200).send(token);
+      } else {
+        res.status(401).send("Unauthorized");
+      }
     } else {
-      // res.status(401).send("Unauthorized");
-      res.status(204).send();
+      res.status(404).send("User not found");
     }
   } else {
-    // res.status(404).send("User not found");
-    res.status(204).send();
+    res.status(400).send("Empty username or password");
   }
 });
 
 router.post("/register", async (req, res) => {
-  const newUser = {
-    username: req.body.username,
-    password: await argon2.hash(req.body.password),
-  };
-  await dao.createUser(newUser.username, newUser.password);
-  res.status(200).send("Register complete");
+  if (req.body.username.length > 0 && req.body.password.length > 0) {
+    const newUser = {
+      username: req.body.username,
+      password: await argon2.hash(req.body.password),
+    };
+    await dao.createUser(newUser.username, newUser.password);
+    res.status(200).send("Register complete");
+  } else {
+    res.status(400).send("Empty username or password");
+  }
+});
+
+router.post("/verify", async (req, res) => {
+  const auth = req.body.token;
+  if (typeof auth !== "string") {
+    return res.status(401).send("Invalid token");
+  }
+  const token = auth;
+  const secret = process.env.SECRET as jwt.Secret;
+  try {
+    jwt.verify(token, secret);
+    return res.status(200).send();
+  } catch (err) {
+    return res.status(403).send("Unauthorized");
+  }
 });
 
 export { router as publicRouter };
