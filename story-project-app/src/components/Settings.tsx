@@ -30,7 +30,10 @@ function Settings() {
 
   return (
     <div className="content settings">
-      <p>Settings will eventually go here.</p>
+      <p style={{ marginBottom: "0" }}>
+        You can change the site's visual presentation here.
+      </p>
+      <p>Settings are saved in local storage.</p>
       <div className="setting-buttons">
         <p>Theme:</p>
         <div>
