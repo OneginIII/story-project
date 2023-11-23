@@ -5,15 +5,16 @@
   align-items: stretch;
   border-width: 0 0 1px 0;
   border-style: solid;
-  border-color: #FFF1;
+  border-color: var(--color-border);
   width: 100%;
+  transition: border-color var(--theme-transition);
 }
 .menu .box {
   flex: 1 1;
   display: flex;
   border-width: 0 1px;
   border-style: solid;
-  border-color: #FFF1;
+  border-color: var(--color-border-menu);
   font-size: 16pt;
   text-align: center;
   text-decoration: none;
@@ -25,5 +26,7 @@
   border-right-width: 0;
 }
 .box.active {
-  background: #FFFFFF0A;
+  background-color: var(--color-box-active);
+  transition: background-color var(--theme-transition),
+  color var(--theme-transition);
 }

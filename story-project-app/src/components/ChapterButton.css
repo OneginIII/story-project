@@ -4,8 +4,8 @@
   justify-content: center;
   width: 2em;
   height: 2em;
-  background-color: #FFF1;
-  color: #FFF8;
+  background-color: var(--color-chapter-background);
+  color: var(--color-chapter-text);
   font-size: 20pt;
   font-weight: bold;
   border-radius: 50%;
@@ -15,10 +15,10 @@
 }
 
 .selected-chapter {
-  border: 0.1em solid #FFF6;
+  border: 0.1em solid var(--color-border-selected);
 }
 
 .chapter-button:hover {
-  background-color: #FFF2;
-  color: #FFFF;
+  background-color: var(--color-border);
+  color: var(--color-text);
 }

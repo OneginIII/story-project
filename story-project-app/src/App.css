@@ -1,14 +1,10 @@
-:root {
-  --header-height: 12em;
-  --footer-height: 6em;
-}
 .app {
   display: flex;
   flex-flow: column;
   height: 100%;
-  background-color: #262626;
+  /* background-color: #262626; */
 }
-
+/* 
 .font-normal {
   font-family: 'Crimson Text', serif;
 }
@@ -37,4 +33,4 @@
 .theme-light input::file-selector-button,
 .theme-light label {
   color: #1A1A1A;
-}
+} */

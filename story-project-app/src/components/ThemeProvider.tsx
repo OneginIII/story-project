@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 type ThemeColor = "theme-dark" | "theme-light";
 type FontStyle = "font-normal" | "font-sans" | "font-dyslexia";
@@ -29,6 +29,14 @@ function ThemeProvider(props: { children: React.ReactNode }) {
     style: "font-normal",
     size: "size-normal",
   });
+
+  useEffect(() => {
+    if (theme.colors === "theme-light") {
+      document.documentElement.classList.add("light");
+    } else if (theme.colors === "theme-dark") {
+      document.documentElement.classList.remove("light");
+    }
+  }, [theme.colors]);
 
   const handleSetTheme = (theme: ITheme): undefined => {
     setTheme(theme);

@@ -11,6 +11,7 @@
 
 .content-icon {
   height: 20em;
+  filter: var(--filter-icon);
 }
 
 h2 {

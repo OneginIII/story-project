@@ -11,30 +11,21 @@ export const AdminContext = createContext(false);
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="*"
-          element={
-            <AuthProvider>
-              <ThemeProvider>
-                <App />
-              </ThemeProvider>
-            </AuthProvider>
-          }
-        />
-        <Route
-          path="/admin/*"
-          element={
-            <AdminContext.Provider value={true}>
-              <AuthProvider>
-                <ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <Routes>
+            <Route path="*" element={<App />} />
+            <Route
+              path="/admin/*"
+              element={
+                <AdminContext.Provider value={true}>
                   <App />
-                </ThemeProvider>
-              </AuthProvider>
-            </AdminContext.Provider>
-          }
-        />
-      </Routes>
+                </AdminContext.Provider>
+              }
+            />
+          </Routes>
+        </ThemeProvider>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

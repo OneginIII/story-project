@@ -1,6 +1,6 @@
 .modal {
-  background-color: #262626;
-  border: 1px solid #FFF2;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
   padding: 0;
 }
 
@@ -35,4 +35,9 @@
 
 .modal button {
   margin: 0 auto;
+}
+
+.modal .login-message {
+  text-align: center;
+  font-size: 13pt;
 }

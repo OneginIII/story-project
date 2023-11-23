@@ -13,3 +13,13 @@
   border-width: 2px;
   font-weight: bold;
 }
+
+#dark-button {
+  color: #E6E6E6;
+  background-color: #262626;
+}
+
+#light-button {
+  color: #1A1A1A;
+  background-color: #EBEBEB;
+}

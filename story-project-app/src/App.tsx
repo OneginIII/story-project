@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -8,7 +8,6 @@ import "./components/Modal.css";
 import LoginModal from "./components/LoginModal";
 import { useLocation, useNavigate } from "react-router-dom";
 import loginService, { useAuth } from "./loginService";
-import { ThemeContext } from "./components/ThemeProvider";
 
 export const homePage = "Home";
 
@@ -17,7 +16,6 @@ function App() {
   const navigate = useNavigate();
   const auth = useAuth();
   const location = useLocation();
-  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     const verify = async () => {
@@ -34,7 +32,7 @@ function App() {
   }, [auth?.token, navigate, location.pathname]);
 
   return (
-    <div className={`app ${theme.colors} ${theme.style} ${theme.size}`}>
+    <div className="app">
       <Header />
       <Main />
       <Modal isOpen={displayLogin} onClose={() => setDisplayLogin(false)}>
