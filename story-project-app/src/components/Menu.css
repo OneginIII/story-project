@@ -15,7 +15,7 @@
   border-width: 0 1px;
   border-style: solid;
   border-color: var(--color-border-menu);
-  font-size: 16pt;
+  font-size: var(--text-size);
   text-align: center;
   text-decoration: none;
   padding: 1em;

@@ -1,5 +1,5 @@
 .not-found {
   text-align: center;
-  font-size: 16pt;
+  font-size: var(--text-size);
   width: 100%;
 }

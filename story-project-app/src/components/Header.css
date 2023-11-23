@@ -27,6 +27,8 @@ header h3 {
   position: absolute;
   top: 0;
   font-size: 17pt;
+  line-height: 24pt;
+  font-family: "Crimson Text", serif;
   font-weight: normal;
   font-style: italic;
 }

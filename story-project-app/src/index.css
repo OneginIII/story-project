@@ -7,6 +7,7 @@ html, body, #root {
 }
 
 :root {
+  /* Color theme */
   --color-background: #262626;
   --color-text: #E6E6E6;
   --color-border: #FFF2;
@@ -21,6 +22,14 @@ html, body, #root {
   --color-chapter-text: #FFF8;
   --color-chapter-background: #FFF1;
   --filter-icon: none;
+  /* Text themes */
+  --font-style: "Crimson Text";
+  --font-fallback: serif;
+  --font-add-size: 2pt;
+  --font-line-height: 22pt;
+  --font-line-height-add: 0pt;
+  --text-size: calc(13pt + var(--font-add-size));
+  /* Misc */
   --header-height: 12em;
   --footer-height: 6em;
   --theme-transition: 0.5s;
@@ -43,9 +52,35 @@ html, body, #root {
   --filter-icon: invert(1);
 }
 
+:root.font-modern {
+  --font-style: "Roboto";
+  --font-fallback: sans-serif;
+  --font-add-size: 0pt;
+  --font-line-height-add: 1pt;
+}
+
+:root.font-easy {
+  --font-style: "Lexend";
+  --font-fallback: sans-serif;
+  --font-add-size: 0pt;
+  --font-line-height-add: 1pt;
+}
+
+:root.text-small {
+  --text-size: calc(11pt + var(--font-add-size));
+  --font-line-height: 18pt;
+}
+
+:root.text-large {
+  --text-size: calc(16pt + var(--font-add-size));
+  --font-line-height: 26pt;
+}
+
 body {
   background-color: var(--color-background);
   color: var(--color-text);
+  font-family: var(--font-style), var(--font-fallback);
+  line-height: calc(var(--font-line-height) + var(--font-line-height-add));
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -56,8 +91,8 @@ body {
 }
 
 label, button, input, input::file-selector-button, textarea {
-  font-size: 14pt;
-  font-family: 'Crimson Text', serif;
+  font-size: var(--text-size);
+  font-family: var(--font-style), var(--font-fallback);
   margin-left: 0.5em;
   margin-right: 0.5em;
 }

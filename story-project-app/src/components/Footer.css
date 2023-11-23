@@ -10,6 +10,7 @@ footer {
   transition: border-color var(--theme-transition);
 }
 footer p {
+  font-family: "Crimson Text", serif;
   font-size: 12pt;
   margin: 0 0.5em;
 }

@@ -1,7 +1,7 @@
 .story {
   display: block;
   position: relative;
-  font-size: 16pt;
+  font-size: var(--text-size);
   /* border-image: linear-gradient(90deg, var(--color-border-gradient), var(--color-border)) 1; */
   border-color: var(--color-border);
   border-width: 0 0 1px 0;

@@ -8,8 +8,10 @@ function LoginModal(props: { onSuccesfulLogin: () => void }) {
     username: "",
     password: "",
   });
-  const [success, setSuccess] = useState(false);
-  const [loginMessage, setLoginMessage] = useState("");
+  const [success, setSuccess] = useState<"initial" | "success" | "failure">(
+    "initial"
+  );
+  const [loginMessage, setLoginMessage] = useState("Login to continue");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -21,10 +23,10 @@ function LoginModal(props: { onSuccesfulLogin: () => void }) {
     event.preventDefault();
     const result = await auth?.onLogin(inputs.username, inputs.password);
     if (result && result[0]) {
-      setSuccess(true);
+      setSuccess("success");
       props.onSuccesfulLogin();
     } else if (result) {
-      setSuccess(false);
+      setSuccess("failure");
       if (typeof result[1] === "string") {
         setLoginMessage(result[1]);
       }
@@ -35,18 +37,27 @@ function LoginModal(props: { onSuccesfulLogin: () => void }) {
     event.preventDefault();
     const result = await auth?.onRegister(inputs.username, inputs.password);
     if (result && result[0]) {
-      setSuccess(true);
+      setSuccess("success");
       if (typeof result[1] === "string") {
         setLoginMessage(result[1]);
       }
     } else if (result) {
-      setSuccess(false);
+      setSuccess("failure");
       if (typeof result[1] === "string") {
         setLoginMessage(result[1]);
       }
     }
   };
 
+  const messageColor = (success: "initial" | "success" | "failure") => {
+    if (success === "initial") {
+      return "inherit";
+    } else if (success === "success") {
+      return "#33E633";
+    } else if (success === "failure") {
+      return "#E63333";
+    }
+  };
   return (
     <form onSubmit={handleLoginSubmit}>
       <label htmlFor="username">Username</label>
@@ -72,7 +83,7 @@ function LoginModal(props: { onSuccesfulLogin: () => void }) {
         </button>
         <button type="submit">Log in</button>
       </div>
-      <div style={success ? { color: "#33E633" } : { color: "#E63333" }}>
+      <div style={{ color: messageColor(success) }}>
         <p className="login-message">{loginMessage}</p>
       </div>
     </form>
