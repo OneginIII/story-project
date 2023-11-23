@@ -6,34 +6,111 @@ html, body, #root {
   height: 100%;
 }
 
+:root {
+  /* Color theme */
+  --color-background: #262626;
+  --color-text: #E6E6E6;
+  --color-border: #FFF2;
+  --color-border-gradient: #FFF1;
+  --color-border-selected: #FFF6;
+  --color-border-menu: #FFF1;
+  --color-active-gradient-a: #FFFFFF07;
+  --color-active-gradient-b: #FFFFFF0C;
+  --color-box-normal: #FFF0;
+  --color-box-hover: #FFF1;
+  --color-box-active: #FFFFFF0A;
+  --color-chapter-text: #FFF8;
+  --color-chapter-background: #FFF1;
+  --filter-icon: none;
+  /* Text themes */
+  --font-style: "Crimson Text";
+  --font-fallback: serif;
+  --font-add-size: 2pt;
+  --font-line-height: 22pt;
+  --font-line-height-add: 0pt;
+  --text-size: calc(13pt + var(--font-add-size));
+  /* Misc */
+  --header-height: 12em;
+  --footer-height: 6em;
+  --theme-transition: 0.5s;
+}
+
+:root.light {
+  --color-background: #EBEBEB;
+  --color-text: #1A1A1A;
+  --color-border: #0004;
+  --color-border-gradient: #0002;
+  --color-border-selected: #000A;
+  --color-border-menu: #0002;
+  --color-active-gradient-a: #FFF4;
+  --color-active-gradient-b: #FFFA;
+  --color-box-normal: #0000;
+  --color-box-hover: #FFF7;
+  --color-box-active: #FFFA;
+  --color-chapter-text: #000B;
+  --color-chapter-background: #0001;
+  --filter-icon: invert(1);
+}
+
+:root.font-modern {
+  --font-style: "Roboto";
+  --font-fallback: sans-serif;
+  --font-add-size: 0pt;
+  --font-line-height-add: 1pt;
+}
+
+:root.font-easy {
+  --font-style: "Lexend";
+  --font-fallback: sans-serif;
+  --font-add-size: 0pt;
+  --font-line-height-add: 1pt;
+}
+
+:root.text-small {
+  --text-size: calc(11pt + var(--font-add-size));
+  --font-line-height: 18pt;
+}
+
+:root.text-large {
+  --text-size: calc(16pt + var(--font-add-size));
+  --font-line-height: 26pt;
+}
+
 body {
-  font-family: 'Crimson Text', serif;
-  background-color: #262626;
-  color: #E6E6E6;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-style), var(--font-fallback);
+  line-height: calc(var(--font-line-height) + var(--font-line-height-add));
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overscroll-behavior: contain;
-}
-
-a, dialog {
-  color: #E6E6E6;
+  transition: background-color var(--theme-transition),
+  color var(--theme-transition);
 }
 
 label, button, input, input::file-selector-button, textarea {
-  font-size: 14pt;
-  font-family: 'Crimson Text', serif;
+  font-size: var(--text-size);
+  font-family: var(--font-style), var(--font-fallback);
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
 
+a, dialog {
+  color: var(--color-text);
+  transition: color var(--theme-transition);
+}
+
 button, input::file-selector-button {
-  background-color: #FFF0;
+  background-color: var(--color-box-normal);
   transition: background-color 0.1s;
-  border: 1px solid #FFF2;
-  color: #E6E6E6;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   padding: 0.5em 1em;
+  transition: background-color var(--theme-transition),
+  color var(--theme-transition),
+  border-color var(--theme-transition);
 }
 
 input {
@@ -50,17 +127,17 @@ input::file-selector-button {
 }
 
 button:hover {
-  background-color: #FFF1;
+  background-color: var(--color-box-hover);
 }
 
 .btn-danger {
-  background-color: #FFF0;
+  background-color: var(--color-box-normal);
   border: 1px solid #F444;
-  color: #E63333;
+  color: #E63333 !important;
 }
 
 .btn-danger:hover {
-  background-color: #F441;
+  background-color: #F221;
 }
 
 li {

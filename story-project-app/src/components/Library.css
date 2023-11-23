@@ -1,17 +1,18 @@
 .story {
   display: block;
   position: relative;
-  font-size: 16pt;
-  border-image: linear-gradient(90deg, #FFF1, #FFF2) 1;
+  font-size: var(--text-size);
+  /* border-image: linear-gradient(90deg, var(--color-border-gradient), var(--color-border)) 1; */
+  border-color: var(--color-border);
   border-width: 0 0 1px 0;
   border-style: solid;
   padding: 1em 1em;
-  background-color: #FFF0;
+  background-color: var(--color-box-normal);
   text-decoration: none;
 }
 
 .story.active {
-  background: linear-gradient(90deg, #FFFFFF05, #FFFFFF0A);
+  background: linear-gradient(90deg, var(--color-active-gradient-a), var(--color-active-gradient-b));
 }
 
 .story-icon-bg {
@@ -24,11 +25,14 @@
   background-repeat: no-repeat;
   background-size: 50%;
   opacity: 0.25;
+  filter: var(--filter-icon);
+  transition: filter var(--theme-transition);
 }
 
 .visible-icon {
   position: absolute;
   right: 1em;
+  filter: var(--filter-icon);
 }
 
 .icon-hidden {

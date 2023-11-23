@@ -1,0 +1,67 @@
+.setting-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: stretch;
+  gap: 1em;
+  font-size: var(--text-size);
+  margin-bottom: 1em;
+}
+
+.setting-buttons button {
+  margin: 0;
+}
+
+.setting-buttons div {
+  display: flex;
+}
+
+.setting-buttons .selected {
+  border-width: 2px;
+  box-shadow: inset 0 0 0.5em #FFF2;
+}
+
+#dark-button {
+  color: #E6E6E6;
+  background-color: #262626;
+}
+
+#light-button {
+  color: #1A1A1A;
+  background-color: #EBEBEB;
+}
+
+#light-button.selected {
+  box-shadow: inset 0 0 0.5em #0004;
+}
+
+#dark-button.selected, #light-button.selected {
+  font-weight: bold;
+}
+
+.setting-buttons #original {
+  font-family: "Crimson Text";
+  font-size: calc(var(--text-size) + 2pt);
+}
+
+.setting-buttons #modern {
+  font-family: "Roboto";
+  font-size: var(--text-size);
+}
+
+.setting-buttons #easy {
+  font-family: "Lexend";
+  font-size: var(--text-size);
+}
+
+.setting-buttons #small {
+  font-size: 13pt !important;
+}
+
+.setting-buttons #regular {
+  font-size: 15pt !important;
+}
+
+.setting-buttons #large {
+  font-size: 18pt !important;
+}

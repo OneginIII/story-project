@@ -6,7 +6,8 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid #FFF2;
+  border-bottom: 1px solid var(--color-border);
+  transition: border-color var(--theme-transition);
 }
 
 h1 {
@@ -26,6 +27,8 @@ header h3 {
   position: absolute;
   top: 0;
   font-size: 17pt;
+  line-height: 24pt;
+  font-family: "Crimson Text", serif;
   font-weight: normal;
   font-style: italic;
 }

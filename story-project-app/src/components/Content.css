@@ -6,17 +6,18 @@
   padding: 1em 2em 2em 2em;
   max-width: 60em;
   margin: 0 auto;
-  font-size: 16pt;
+  font-size: var(--text-size);
 }
 
 .content-icon {
   height: 20em;
+  filter: var(--filter-icon);
 }
 
 h2 {
   text-align: center;
   width: 100%;
-  font-size: 32pt;
+  font-size: calc(var(--text-size) * 2.5);
 }
 
 .chapter-select {
@@ -33,13 +34,13 @@ h2 {
   margin: 1em;
 }
 
-.content-body h3 {
+h3 {
   text-align: center;
-  font-size: 24pt;
+  font-size: calc(var(--text-size) * 2);
 }
 
 .content-body p {
-  font-size: 16pt;
+  font-size: var(--text-size);
   text-align: justify;
 }
 
@@ -62,18 +63,7 @@ h2 {
 }
 
 .markdown-content {
-  font-size: 16pt;
+  font-size: var(--text-size);
   max-width: 40em;
   margin: 0 auto;
-}
-
-.markdown-content h3 {
-  text-align: center;
-  font-size: 24pt;
-}
-
-.markdown-content h2 {
-  text-align: center;
-  width: 100%;
-  font-size: 32pt;
 }

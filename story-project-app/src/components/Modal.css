@@ -1,6 +1,6 @@
 .modal {
-  background-color: #262626;
-  border: 1px solid #FFF2;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
   padding: 0;
 }
 
@@ -27,7 +27,7 @@
 }
 
 .modal h3 {
-  font-size: 18pt;
+  font-size: calc(var(--text-size) * 1.2);
   text-align: center;
   margin-top: 0;
   margin-bottom: 1em;
@@ -35,4 +35,9 @@
 
 .modal button {
   margin: 0 auto;
+}
+
+.modal .login-message {
+  text-align: center;
+  font-size: calc(var(--text-size) * 0.8);
 }

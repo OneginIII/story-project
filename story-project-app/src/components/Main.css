@@ -10,13 +10,16 @@ main {
 }
 .sidebar {
   width: 100%;
-  border-right: 1px solid #FFF2;
-  /* background-color: #FFF1; */
+  border-right: 1px solid var(--color-border);
+  transition: border-color var(--theme-transition);
 }
 .box-button {
   background-color: #FFF0;
-  transition: background-color 0.1s;
+  transition: background-color 0.1s,
+  color var(--theme-transition),
+  border-color var(--theme-transition),
+  border-image var(--theme-transition);
 }
 .box-button:hover {
-  background-color: #FFF1;
+  background-color: var(--color-box-hover);
 }
