@@ -49,7 +49,7 @@ function StoryEdit(props: {
     }
   }, [props.id, props.new]);
 
-  const handleIconUpload = async () => {
+  const handleIconUpload = async (id: string) => {
     let newIconPath = storyData.icon;
     if (deleteIcon) {
       return "";
@@ -57,7 +57,7 @@ function StoryEdit(props: {
     if (newIcon) {
       setUploadMessage("Uploading...");
       await adminService
-        .uploadIcon(storyData.id, newIcon)
+        .uploadIcon(id, newIcon)
         .then((response) => {
           newIconPath = response.data;
           setUploadMessage("Upload succesful!");
@@ -79,7 +79,7 @@ function StoryEdit(props: {
       .updateStory(storyData.id, {
         ...storyData,
         title: newTitle,
-        icon: await handleIconUpload(),
+        icon: await handleIconUpload(storyData.id),
         url: newUrl,
         visible: newVisibility,
       })
@@ -93,12 +93,13 @@ function StoryEdit(props: {
 
   const handleCreate = async (event: FormEvent) => {
     event.preventDefault();
+    const newId = uuidv4();
     adminService
       .createStory({
         title: newTitle,
         created_at: "",
-        icon: await handleIconUpload(),
-        id: uuidv4(),
+        icon: await handleIconUpload(newId),
+        id: newId,
         url: newUrl,
         visible: false,
         created_by: "",

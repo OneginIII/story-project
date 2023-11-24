@@ -44,6 +44,7 @@ router.put("/chapters/:id", async (req, res) => {
 // POST
 router.post("/story", async (req, res) => {
   const result = await dao.createStory(
+    req.body.id,
     req.body.title,
     req.body.icon,
     req.body.url,

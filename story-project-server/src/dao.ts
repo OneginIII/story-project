@@ -52,6 +52,7 @@ const updateChapter = async (id: string, title: string, text: string) => {
 
 // POST
 const createStory = async (
+  id: string,
   title: string,
   icon: string,
   url: string,
@@ -59,6 +60,7 @@ const createStory = async (
 ) => {
   console.log(`Creating story ${title}.`);
   const result = await executeQuery(queries.createStory, [
+    id,
     title,
     icon,
     url,

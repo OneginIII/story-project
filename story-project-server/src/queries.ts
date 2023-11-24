@@ -11,7 +11,7 @@ const updateChapter =
 
 // POST
 const createStory =
-  "INSERT INTO stories (title, icon, url, visible, created_at, modified_at) VALUES ($1, $2, $3, $4, NOW(), NOW());";
+  "INSERT INTO stories (id ,title, icon, url, visible, created_at, modified_at) VALUES ($1 ,$2, $3, $4, $5, NOW(), NOW());";
 const createChapter =
   "INSERT INTO chapters (story_id, title, text, created_at, modified_at) VALUES ($1, $2, $3, NOW(), NOW());";
 
