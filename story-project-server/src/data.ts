@@ -12,11 +12,13 @@ export interface IStory {
 export function isStory(story: unknown): story is IStory {
   if (
     typeof (story as IStory)["id"] === "string" &&
+    typeof (story as IStory)["created_by"] === "string" &&
     typeof (story as IStory)["title"] === "string" &&
+    typeof (story as IStory)["icon"] === "string" &&
     typeof (story as IStory)["url"] === "string" &&
     typeof (story as IStory)["visible"] === "boolean" &&
-    // Checking for the date needs to be fixed, once working with a database
-    typeof (story as IStory)["icon"] === "string"
+    typeof (story as IStory)["created_at"] === "string" &&
+    typeof (story as IStory)["modified_at"] === "string"
   ) {
     return true;
   }

@@ -2,7 +2,6 @@ header {
   flex: 0 1;
   min-height: var(--header-height);
   text-align: center;
-  /* background-color: #FFF2; */
   display: flex;
   justify-content: center;
   align-items: center;

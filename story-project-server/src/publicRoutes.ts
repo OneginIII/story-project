@@ -54,7 +54,7 @@ router.get("/page/:name", (req, res) => {
       }
       res.send(data.toString());
     });
-  } else res.status(500).send();
+  } else res.status(400).send("Bad request");
 });
 
 // Authenticate

@@ -86,7 +86,6 @@ function StoryContent(props: { id: string }) {
       </div>
       <div className="content-body">
         <h3>
-          {/*Something (Prettier?) really wants to add that {" "} here for some reason. (Maybe end of line)*/}
           Chapter {currentChapter + 1} – {chapterData[currentChapter].title}
         </h3>
         <p>{chapterData[currentChapter].text}</p>

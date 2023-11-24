@@ -9,15 +9,20 @@
   font-size: var(--text-size);
 }
 
-.content-icon {
-  height: 20em;
-  filter: var(--filter-icon);
-}
-
 h2 {
   text-align: center;
   width: 100%;
   font-size: calc(var(--text-size) * 2.5);
+}
+
+h3 {
+  text-align: center;
+  font-size: calc(var(--text-size) * 2);
+}
+
+.content-icon {
+  height: 20em;
+  filter: var(--filter-icon);
 }
 
 .chapter-select {
@@ -32,11 +37,6 @@ h2 {
 
 .content-body {
   margin: 1em;
-}
-
-h3 {
-  text-align: center;
-  font-size: calc(var(--text-size) * 2);
 }
 
 .content-body p {

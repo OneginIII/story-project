@@ -2,13 +2,13 @@ footer {
   flex: 0 1;
   min-height: var(--footer-height);
   text-align: center;
-  /* background-color: #FFF2; */
   border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: center;
   align-items: center;
   transition: border-color var(--theme-transition);
 }
+
 footer p {
   font-family: "Crimson Text", serif;
   font-size: 12pt;

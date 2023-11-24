@@ -26,13 +26,6 @@
   margin-bottom: 0;
 }
 
-.modal h3 {
-  font-size: calc(var(--text-size) * 1.2);
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 1em;
-}
-
 .modal button {
   margin: 0 auto;
 }

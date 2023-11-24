@@ -12,7 +12,6 @@ import NotFound from "../../NotFound";
 function ChapterEdit(props: { id: string; new?: boolean }) {
   const navigate = useNavigate();
   const { chapter } = useParams();
-  // const currentChapter = Number(chapter) ? Number(chapter) - 1 : 0;
   const [currentChapter, setCurrentChapter] = useState(
     Number(chapter) ? Number(chapter) - 1 : 0
   );
