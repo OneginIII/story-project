@@ -20,14 +20,14 @@ function StoryEdit(props: {
   const [newIcon, setNewIcon] = useState<File>();
   const [uploadMessage, setUploadMessage] = useState("");
   const [newUrl, setNewUrl] = useState("");
-  const [newVisibility, setNewVisibility] = useState(true);
+  const [newVisibility, setNewVisibility] = useState(false);
   const [storyData, setStoryData] = useState<IStory>({
     title: "",
     created_at: "",
     icon: "",
     id: "",
     url: "",
-    visible: true,
+    visible: false,
     modified_at: "",
     created_by: "",
   });
@@ -45,7 +45,7 @@ function StoryEdit(props: {
       setNewTitle("");
       setNewIcon(undefined);
       setNewUrl("");
-      setNewVisibility(true);
+      setNewVisibility(false);
     }
   }, [props.id, props.new]);
 
@@ -101,7 +101,7 @@ function StoryEdit(props: {
         icon: await handleIconUpload(newId),
         id: newId,
         url: newUrl,
-        visible: false,
+        visible: newVisibility,
         created_by: "",
         modified_at: "",
       })
