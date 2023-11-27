@@ -114,6 +114,7 @@ function StoryEdit(props: {
 
   const handleDelete = (event: FormEvent) => {
     event.preventDefault();
+    adminService.deleteIcon(storyData.icon);
     adminService.deleteStory(storyData.id).then((response) => {
       console.log(response.status);
       navigate(`../`);
