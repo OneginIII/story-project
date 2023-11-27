@@ -23,13 +23,13 @@ function StoryEdit(props: {
   const [newVisibility, setNewVisibility] = useState(false);
   const [storyData, setStoryData] = useState<IStory>({
     title: "",
-    created_at: "",
     icon: "",
     id: "",
     url: "",
     visible: false,
-    modified_at: "",
     created_by: "",
+    modified_at: "",
+    created_at: "",
   });
   const [deleteIcon, setDeleteIcon] = useState(false);
 
@@ -59,7 +59,7 @@ function StoryEdit(props: {
       await adminService
         .uploadIcon(id, newIcon)
         .then((response) => {
-          newIconPath = response.data;
+          newIconPath = response?.data;
           setUploadMessage("Upload succesful!");
         })
         .catch((err) => {
@@ -84,8 +84,7 @@ function StoryEdit(props: {
         visible: newVisibility,
       })
       .then((response) => {
-        console.log(response.status);
-        setStoryData(response.data);
+        setStoryData(response?.data);
         navigate(`../${newUrl}`);
         props.refreshStories();
       });
@@ -97,16 +96,15 @@ function StoryEdit(props: {
     adminService
       .createStory({
         title: newTitle,
-        created_at: "",
         icon: await handleIconUpload(newId),
         id: newId,
         url: newUrl,
         visible: newVisibility,
         created_by: "",
+        created_at: "",
         modified_at: "",
       })
-      .then((response) => {
-        console.log(response.status);
+      .then(() => {
         navigate(`../${newUrl}`);
         props.refreshStories();
       });
@@ -114,9 +112,10 @@ function StoryEdit(props: {
 
   const handleDelete = (event: FormEvent) => {
     event.preventDefault();
-    adminService.deleteIcon(storyData.icon);
-    adminService.deleteStory(storyData.id).then((response) => {
-      console.log(response.status);
+    if (storyData.icon) {
+      adminService.deleteIcon(storyData.icon);
+    }
+    adminService.deleteStory(storyData.id).then(() => {
       navigate(`../`);
       props.refreshStories();
     });
@@ -137,6 +136,8 @@ function StoryEdit(props: {
           id="title"
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
+          required
+          maxLength={100}
         />
         <div style={{ marginBottom: "0" }}>
           <label htmlFor="icon">Icon</label>
@@ -185,6 +186,8 @@ function StoryEdit(props: {
           id="url"
           value={newUrl}
           onChange={(e) => setNewUrl(e.target.value)}
+          required
+          pattern="[a-z\-]{1,100}"
         />
         <div>
           <label htmlFor="visibility" style={{ width: "max-content" }}>

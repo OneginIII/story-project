@@ -80,8 +80,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
         title: editedTitle,
         text: editedText,
       })
-      .then((response) => {
-        console.log(response.status);
+      .then(() => {
         handleSetCurrentChapter(currentChapter);
       });
   };
@@ -89,16 +88,13 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
   const handleDelete = (event: FormEvent) => {
     event.preventDefault();
     setShowDelete(false);
-    adminService
-      .deleteChapter(chapterData[currentChapter].id)
-      .then((response) => {
-        console.log(response.status);
-        handleSetCurrentChapter(
-          Math.max(currentChapter - 1, 0),
-          // This is a hack to fix the refresh on chapter delete 0 fix
-          currentChapter === 0 && chapter !== undefined
-        );
-      });
+    adminService.deleteChapter(chapterData[currentChapter].id).then(() => {
+      handleSetCurrentChapter(
+        Math.max(currentChapter - 1, 0),
+        // This is a hack to fix the refresh on chapter delete 0 fix
+        currentChapter === 0 && chapter !== undefined
+      );
+    });
   };
 
   const handleCreate = (event: FormEvent) => {
@@ -109,8 +105,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
         title: editedTitle,
         text: editedText,
       })
-      .then((response) => {
-        console.log(response.status);
+      .then(() => {
         navigate("../" + (chapterData.length + 1));
       });
   };
@@ -164,6 +159,8 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
           value={editedTitle}
           style={{ width: "90%" }}
           onChange={(e) => setEditedTitle(e.target.value)}
+          required
+          maxLength={100}
         />
         <label htmlFor="chapter-text">Chapter text</label>
         <br />
@@ -171,6 +168,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
           id="chapter-text"
           value={editedText}
           onChange={(e) => setEditedText(e.target.value)}
+          required
         ></textarea>
         <div className="horizontal-buttons">
           {!props.new && (

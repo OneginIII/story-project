@@ -18,18 +18,24 @@ const setToken = (token: string) => {
 const updateStory = (id: string, story: IStory) => {
   const request = axios
     .put(`${serverUrl}/story/${id}`, story, config)
-    .catch((reason) => reason);
-  return request.then((response) => response);
+    .catch((reason) => console.error(reason));
+  return request
+    .then((response) => response)
+    .catch((reason) => console.error(reason));
 };
 
 const createStory = (story: IStory) => {
   const request = axios.post(`${serverUrl}/story`, story, config);
-  return request.then((response) => response);
+  return request
+    .then((response) => response)
+    .catch((reason) => console.error(reason));
 };
 
 const deleteStory = (id: string) => {
   const request = axios.delete(`${serverUrl}/story/${id}`, config);
-  return request.then((response) => response);
+  return request
+    .then((response) => response)
+    .catch((reason) => console.error(reason));
 };
 
 const uploadIcon = (id: string, icon: File) => {
@@ -43,7 +49,9 @@ const uploadIcon = (id: string, icon: File) => {
     formData,
     uploadConfig
   );
-  return request.then((response) => response);
+  return request
+    .then((response) => response)
+    .catch((reason) => console.error(reason));
 };
 
 const deleteIcon = (path: string) => {
@@ -52,23 +60,31 @@ const deleteIcon = (path: string) => {
     `${serverUrl}/icon/${pathSubstrings[pathSubstrings.length - 1]}`,
     config
   );
-  return request.then((response) => response);
+  return request
+    .then((response) => response)
+    .catch((reason) => console.error(reason));
 };
 
 // Chapter
 const updateChapter = (id: string, chapter: IChapter) => {
   const request = axios.put(`${serverUrl}/chapters/${id}`, chapter, config);
-  return request.then((response) => response);
+  return request
+    .then((response) => response)
+    .catch((reason) => console.error(reason));
 };
 
 const createChapter = (id: string, chapter: IChapter) => {
   const request = axios.post(`${serverUrl}/chapters/${id}`, chapter, config);
-  return request.then((response) => response);
+  return request
+    .then((response) => response)
+    .catch((reason) => console.error(reason));
 };
 
 const deleteChapter = (id: string) => {
   const request = axios.delete(`${serverUrl}/chapters/${id}`, config);
-  return request.then((response) => response);
+  return request
+    .then((response) => response)
+    .catch((reason) => console.error(reason));
 };
 
 export default {

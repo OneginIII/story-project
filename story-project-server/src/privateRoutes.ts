@@ -3,6 +3,8 @@ import "dotenv/config";
 import dao from "./dao";
 import multer from "multer";
 import fs from "fs";
+import { isChapter, isStory } from "./data";
+import { validate as uuidValidate } from "uuid";
 
 const iconPath = "public/icons";
 
@@ -22,35 +24,41 @@ const upload = multer({ storage: storage });
 
 // PUT
 router.put("/story/:id", async (req, res) => {
-  const result = await dao.updateStory(
-    req.params.id,
-    req.body.title,
-    req.body.icon,
-    req.body.url,
-    req.body.visible
-  );
-  res.send(result);
+  if (isStory(req.body) && uuidValidate(req.params.id)) {
+    const result = await dao.updateStory(
+      req.params.id,
+      req.body.title,
+      req.body.icon,
+      req.body.url,
+      req.body.visible
+    );
+    res.send(result);
+  } else res.status(400).send();
 });
 
 router.put("/chapters/:id", async (req, res) => {
-  const result = await dao.updateChapter(
-    req.params.id,
-    req.body.title,
-    req.body.text
-  );
-  res.send(result);
+  if (isChapter(req.body) && uuidValidate(req.params.id)) {
+    const result = await dao.updateChapter(
+      req.params.id,
+      req.body.title,
+      req.body.text
+    );
+    res.send(result);
+  } else res.status(400).send();
 });
 
 // POST
 router.post("/story", async (req, res) => {
-  const result = await dao.createStory(
-    req.body.id,
-    req.body.title,
-    req.body.icon,
-    req.body.url,
-    req.body.visible
-  );
-  res.send(result);
+  if (isStory(req.body)) {
+    const result = await dao.createStory(
+      req.body.id,
+      req.body.title,
+      req.body.icon,
+      req.body.url,
+      req.body.visible
+    );
+    res.send(result);
+  } else res.status(400).send();
 });
 
 router.post("/story/:id/icon", upload.single("icon"), async (req, res) => {
@@ -62,30 +70,42 @@ router.post("/story/:id/icon", upload.single("icon"), async (req, res) => {
 });
 
 router.post("/chapters/:story_id", async (req, res) => {
-  const result = await dao.createChapter(
-    req.params.story_id,
-    req.body.title,
-    req.body.text
-  );
-  res.send(result);
+  if (isChapter(req.body)) {
+    const result = await dao.createChapter(
+      req.params.story_id,
+      req.body.title,
+      req.body.text
+    );
+    res.send(result);
+  } else res.status(400).send();
 });
 
 // DELETE
 router.delete("/story/:id", async (req, res) => {
-  const result = await dao.deleteStory(req.params.id);
-  res.send(result);
+  if (uuidValidate(req.params.id)) {
+    const result = await dao.deleteStory(req.params.id);
+    if (result.rowCount) {
+      res.status(200).send();
+    } else res.status(500).send();
+  } else res.status(400).send();
 });
 
 router.delete("/chapters/:id", async (req, res) => {
-  const result = await dao.deleteChapter(req.params.id);
-  res.send(result);
+  if (uuidValidate(req.params.id)) {
+    const result = await dao.deleteChapter(req.params.id);
+    if (result.rowCount) {
+      res.status(200).send();
+    } else res.status(500).send();
+    res.send(result);
+  } else res.status(400).send();
 });
 
 router.delete("/icon/:name", async (req, res) => {
-  console.log(req.params.name);
   fs.access(`${iconPath}/${req.params.name}`, () => {
-    fs.unlink(`${iconPath}/${req.params.name}`, () => {
-      res.status(200).send();
+    fs.unlink(`${iconPath}/${req.params.name}`, (err) => {
+      if (err) {
+        res.status(500).send();
+      } else res.status(200).send();
       return;
     });
   });
