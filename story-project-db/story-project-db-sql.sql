@@ -34,10 +34,10 @@ INSERT INTO users (username, password, created_at)
 VALUES
   ('story-admin', 'story-master', NOW());
   
-INSERT INTO stories (created_by, title, icon, url, visible, created_at, modified_at)
+INSERT INTO stories (created_by, title, url, visible, created_at, modified_at)
 VALUES
   ((SELECT id FROM users WHERE username='story-admin'),
-  'A Night in the Woods', '/icons/night-icon.svg', 'a-night-in-the-woods', true, NOW(), NOW());
+  'A Night in the Woods', 'a-night-in-the-woods', true, NOW(), NOW());
 
 INSERT INTO chapters (story_id, number, title, text, created_at, modified_at)
 VALUES
