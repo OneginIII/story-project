@@ -8,6 +8,7 @@ import storyService from "../../storyService";
 import { IChapter, IStory } from "../../types";
 import adminService from "../../adminService";
 import NotFound from "../../NotFound";
+import EditNotification from "./EditNotification";
 
 function ChapterEdit(props: { id: string; new?: boolean }) {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
   const [editedText, setEditedText] = useState("Loading...");
   const [editedNumber, setEditedNumber] = useState(1);
   const [textLength, setTextLength] = useState(0);
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     setCurrentChapter(Number(chapter) ? Number(chapter) - 1 : 0);
@@ -59,6 +61,10 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
       setEditedNumber(1);
     }
   }, [props.id, props.new, navigate, currentChapter, chapter]);
+
+  useEffect(() => {
+    setShowNotification(false);
+  }, [showNotification]);
 
   const handleSetCurrentChapter = (val: number, empty?: boolean) => {
     if (chapterData.length < 1) {
@@ -88,6 +94,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
       })
       .then(() => {
         handleSetCurrentChapter(currentChapter);
+        setShowNotification(true);
       });
   };
 
@@ -239,6 +246,10 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
           onClose={() => setShowDelete(false)}
         />
       </Modal>
+      <EditNotification
+        message="Chapter edited successfully"
+        show={showNotification}
+      />
     </>
   );
 }
