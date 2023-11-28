@@ -187,7 +187,8 @@ function StoryEdit(props: {
           value={newUrl}
           onChange={(e) => setNewUrl(e.target.value)}
           required
-          pattern="[a-z\-]{1,100}"
+          pattern="^(?!(new)$)[a-z\-0-9]*$"
+          maxLength={100}
         />
         <div>
           <label htmlFor="visibility" style={{ width: "max-content" }}>
