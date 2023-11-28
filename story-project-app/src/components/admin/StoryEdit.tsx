@@ -32,6 +32,8 @@ function StoryEdit(props: {
     created_at: "",
   });
   const [deleteIcon, setDeleteIcon] = useState(false);
+  const [createDate, setCreateDate] = useState("");
+  const [editDate, setEditDate] = useState("");
 
   useEffect(() => {
     if (!props.new) {
@@ -40,6 +42,8 @@ function StoryEdit(props: {
         setNewTitle(serverStory.title);
         setNewUrl(serverStory.url);
         setNewVisibility(serverStory.visible);
+        setCreateDate(serverStory.created_at);
+        setEditDate(serverStory.modified_at);
       });
     } else {
       setNewTitle("");
@@ -212,6 +216,18 @@ function StoryEdit(props: {
             onChange={(e) => setNewVisibility(e.target.checked)}
             style={{ width: "max-content" }}
           />
+        </div>
+        <div className="date-info">
+          <p>
+            {createDate
+              ? "Created: " + new Date(createDate).toLocaleString("fi-FI")
+              : "loading..."}
+          </p>
+          <p>
+            {editDate
+              ? "Last Modified: " + new Date(editDate).toLocaleString("fi-FI")
+              : "loading..."}
+          </p>
         </div>
         <div className="horizontal-buttons">
           {!props.new && (

@@ -2,7 +2,7 @@ CREATE TABLE "users" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid()  ,
   "username" text,
   "password" varchar,
-  "created_at" timestamp
+  "created_at" timestamptz
 );
 
 CREATE TABLE "stories" (
@@ -12,8 +12,8 @@ CREATE TABLE "stories" (
   "icon" text,
   "url" varchar UNIQUE,
   "visible" boolean,
-  "created_at" timestamp,
-  "modified_at" timestamp
+  "created_at" timestamptz,
+  "modified_at" timestamptz
 );
 
 CREATE TABLE "chapters" (
@@ -22,8 +22,8 @@ CREATE TABLE "chapters" (
   "number" smallint,
   "title" text,
   "text" text,
-  "created_at" timestamp,
-  "modified_at" timestamp
+  "created_at" timestamptz,
+  "modified_at" timestamptz
 );
 
 ALTER TABLE "stories" ADD FOREIGN KEY ("created_by") REFERENCES "users" ("id");

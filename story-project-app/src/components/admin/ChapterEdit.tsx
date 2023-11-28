@@ -34,6 +34,8 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
   const [editedNumber, setEditedNumber] = useState(1);
   const [textLength, setTextLength] = useState(0);
   const [showNotification, setShowNotification] = useState(false);
+  const [createDate, setCreateDate] = useState("");
+  const [editDate, setEditDate] = useState("");
 
   useEffect(() => {
     setCurrentChapter(Number(chapter) ? Number(chapter) - 1 : 0);
@@ -48,6 +50,8 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
               setEditedText(serverChapters[currentChapter].text);
               setTextLength(serverChapters[currentChapter].text.length);
               setEditedNumber(serverChapters[currentChapter].number);
+              setCreateDate(serverChapters[currentChapter].created_at);
+              setEditDate(serverChapters[currentChapter].modified_at);
             } else {
               navigate("../new");
             }
@@ -59,6 +63,8 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
       setEditedText("");
       setTextLength(0);
       setEditedNumber(1);
+      setCreateDate("");
+      setEditDate("");
     }
   }, [props.id, props.new, navigate, currentChapter, chapter]);
 
@@ -222,6 +228,10 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
             />
           </>
         )}
+        <div className="date-info">
+          <p>Created: {new Date(createDate).toLocaleString("fi-FI")}</p>
+          <p>Last Modified: {new Date(editDate).toLocaleString("fi-FI")}</p>
+        </div>
         <div className="horizontal-buttons">
           {!props.new && (
             <button

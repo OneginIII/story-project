@@ -75,3 +75,18 @@
   font-size: calc(var(--text-size) * 1.2);
   text-align: center;
 }
+
+.date-info {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.date-info p {
+  margin: 0;
+  font-size: calc(var(--text-size) * 0.8);
+  opacity: 0.5;
+}
