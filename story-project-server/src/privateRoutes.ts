@@ -98,7 +98,6 @@ router.delete("/chapters/:id", async (req, res) => {
     if (result.rowCount) {
       res.status(200).send();
     } else res.status(500).send();
-    res.send(result);
   } else res.status(400).send();
 });
 

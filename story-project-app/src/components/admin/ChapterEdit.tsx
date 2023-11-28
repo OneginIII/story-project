@@ -61,6 +61,9 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
   }, [props.id, props.new, navigate, currentChapter, chapter]);
 
   const handleSetCurrentChapter = (val: number, empty?: boolean) => {
+    if (chapterData.length < 1) {
+      navigate(`../new`);
+    }
     if (chapterData[val]) {
       setCurrentChapter(val);
       navigate(`../` + String(val + 1));
