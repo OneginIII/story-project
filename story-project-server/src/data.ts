@@ -31,6 +31,7 @@ export function isStory(story: unknown): story is IStory {
 export interface IChapter {
   title: string;
   text: string;
+  number: number;
 }
 
 export function isChapter(chapter: unknown): chapter is IChapter {
@@ -38,7 +39,8 @@ export function isChapter(chapter: unknown): chapter is IChapter {
     typeof (chapter as IChapter)["title"] === "string" &&
     (chapter as IChapter)["title"].length <= 100 &&
     typeof (chapter as IChapter)["text"] === "string" &&
-    (chapter as IChapter)["title"].length <= 10000
+    (chapter as IChapter)["title"].length <= 10000 &&
+    typeof (chapter as IChapter)["number"] === "number"
   ) {
     return true;
   }

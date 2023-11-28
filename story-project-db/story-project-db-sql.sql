@@ -19,7 +19,7 @@ CREATE TABLE "stories" (
 CREATE TABLE "chapters" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   "story_id" uuid,
-  "number" serial,
+  "number" smallint,
   "title" text,
   "text" text,
   "created_at" timestamp,

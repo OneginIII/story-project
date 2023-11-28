@@ -30,6 +30,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
   });
   const [editedTitle, setEditedTitle] = useState("Loading...");
   const [editedText, setEditedText] = useState("Loading...");
+  const [editedNumber, setEditedNumber] = useState(1);
   const [textLength, setTextLength] = useState(0);
 
   useEffect(() => {
@@ -44,6 +45,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
               setEditedTitle(serverChapters[currentChapter].title);
               setEditedText(serverChapters[currentChapter].text);
               setTextLength(serverChapters[currentChapter].text.length);
+              setEditedNumber(serverChapters[currentChapter].number);
             } else {
               navigate("../new");
             }
@@ -53,6 +55,8 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
     } else {
       setEditedTitle("");
       setEditedText("");
+      setTextLength(0);
+      setEditedNumber(1);
     }
   }, [props.id, props.new, navigate, currentChapter, chapter]);
 
@@ -77,6 +81,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
         id: "",
         title: editedTitle,
         text: editedText,
+        number: editedNumber,
       })
       .then(() => {
         handleSetCurrentChapter(currentChapter);
@@ -102,6 +107,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
         id: "",
         title: editedTitle,
         text: editedText,
+        number: chapterData.length + 1,
       })
       .then(() => {
         navigate("../" + (chapterData.length + 1));
@@ -185,6 +191,27 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
           required
           maxLength={10000}
         ></textarea>
+        {!props.new && (
+          <>
+            <label htmlFor="chapter-number">
+              Chapter number
+              <span className="help-text">
+                (number used to sort chapters)
+                <span className="help-warning">
+                  {" "}
+                  Experimental, changes sorting on this page too!
+                </span>
+              </span>
+            </label>
+            <input
+              style={{ maxWidth: "6em" }}
+              id="chapter-number"
+              type="number"
+              value={editedNumber}
+              onChange={(e) => setEditedNumber(Number(e.target.value))}
+            />
+          </>
+        )}
         <div className="horizontal-buttons">
           {!props.new && (
             <button

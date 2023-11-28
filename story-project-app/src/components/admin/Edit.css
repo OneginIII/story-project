@@ -32,3 +32,7 @@
   opacity: 0.5;
   font-size: calc(var(--text-size) * 0.9);
 }
+
+.help-warning {
+  color: #E63333;
+}

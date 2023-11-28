@@ -41,7 +41,8 @@ router.put("/chapters/:id", async (req, res) => {
     const result = await dao.updateChapter(
       req.params.id,
       req.body.title,
-      req.body.text
+      req.body.text,
+      req.body.number
     );
     res.send(result);
   } else res.status(400).send();
@@ -74,7 +75,8 @@ router.post("/chapters/:story_id", async (req, res) => {
     const result = await dao.createChapter(
       req.params.story_id,
       req.body.title,
-      req.body.text
+      req.body.text,
+      req.body.number
     );
     res.send(result);
   } else res.status(400).send();
