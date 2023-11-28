@@ -129,7 +129,10 @@ function StoryEdit(props: {
         encType="multipart/form-data"
       >
         <h2>{props.new ? "Create story" : "Edit story"}</h2>
-        <label htmlFor="title">Title</label>
+        <label htmlFor="title">
+          Title
+          <span className="help-text">(max 100 characters long)</span>
+        </label>
         <input
           type="text"
           name="title"
@@ -140,7 +143,9 @@ function StoryEdit(props: {
           maxLength={100}
         />
         <div style={{ marginBottom: "0" }}>
-          <label htmlFor="icon">Icon</label>
+          <label htmlFor="icon">
+            Icon <span className="help-text">(.svg files only)</span>
+          </label>
           <div style={{ display: "flex", alignItems: "baseline" }}>
             <input
               type="file"
@@ -179,7 +184,12 @@ function StoryEdit(props: {
             )}
           </div>
         </div>
-        <label htmlFor="url">URL</label>
+        <label htmlFor="url">
+          URL{" "}
+          <span className="help-text">
+            (a-z, 0-9, -, not "new", all lower-case and max 100 characters long)
+          </span>
+        </label>
         <input
           type="text"
           name="url"

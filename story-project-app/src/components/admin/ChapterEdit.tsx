@@ -28,12 +28,9 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
     modified_at: "",
     created_by: "",
   });
-  const [editedTitle, setEditedTitle] = useState(
-    chapterData[currentChapter] ? chapterData[currentChapter].title : ""
-  );
-  const [editedText, setEditedText] = useState(
-    chapterData[currentChapter] ? chapterData[currentChapter].text : ""
-  );
+  const [editedTitle, setEditedTitle] = useState("Loading...");
+  const [editedText, setEditedText] = useState("Loading...");
+  const [textLength, setTextLength] = useState(0);
 
   useEffect(() => {
     setCurrentChapter(Number(chapter) ? Number(chapter) - 1 : 0);
@@ -46,6 +43,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
             if (serverChapters.length > 0) {
               setEditedTitle(serverChapters[currentChapter].title);
               setEditedText(serverChapters[currentChapter].text);
+              setTextLength(serverChapters[currentChapter].text.length);
             } else {
               navigate("../new");
             }
@@ -152,7 +150,10 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
             targetChapter={currentChapter}
           />
         </div>
-        <label htmlFor="title">Title</label>
+        <label htmlFor="title">
+          Title
+          <span className="help-text">(max 100 characters long)</span>
+        </label>
         <input
           type="text"
           id="title"
@@ -162,13 +163,27 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
           required
           maxLength={100}
         />
-        <label htmlFor="chapter-text">Chapter text</label>
-        <br />
+        <label
+          style={{ display: "flex", marginBottom: "0" }}
+          htmlFor="chapter-text"
+        >
+          Chapter text
+          <span className="help-text">
+            (max {(10000).toLocaleString()} characters long)
+          </span>
+          <span style={{ marginLeft: "auto" }}>
+            {textLength.toLocaleString()} / {(10000).toLocaleString()}
+          </span>
+        </label>
         <textarea
           id="chapter-text"
           value={editedText}
-          onChange={(e) => setEditedText(e.target.value)}
+          onChange={(e) => {
+            setEditedText(e.target.value);
+            setTextLength(e.target.value.length);
+          }}
           required
+          maxLength={10000}
         ></textarea>
         <div className="horizontal-buttons">
           {!props.new && (

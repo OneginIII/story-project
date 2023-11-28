@@ -37,7 +37,8 @@ export function isChapter(chapter: unknown): chapter is IChapter {
   if (
     typeof (chapter as IChapter)["title"] === "string" &&
     (chapter as IChapter)["title"].length <= 100 &&
-    typeof (chapter as IChapter)["text"] === "string"
+    typeof (chapter as IChapter)["text"] === "string" &&
+    (chapter as IChapter)["title"].length <= 10000
   ) {
     return true;
   }
