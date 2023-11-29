@@ -15,10 +15,12 @@ import Admin from "./Admin";
 import { IStory } from "../types";
 import storyService from "../storyService";
 import { AdminContext } from "..";
+import Loading from "./Loading";
 
 function Main() {
   const [pages, setPages] = useState<string[]>([]);
   const [stories, setStories] = useState<IStory[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     pageService.getPageList().then((serverPages) => {
@@ -31,9 +33,13 @@ function Main() {
   }, []);
 
   const refreshStories = () => {
-    storyService.getStoryList().then((serverStories) => {
-      setStories(serverStories);
-    });
+    setLoading(true);
+    storyService
+      .getStoryList()
+      .then((serverStories) => {
+        setStories(serverStories);
+      })
+      .finally(() => setLoading(false));
   };
 
   const navigate = useNavigate();
@@ -111,6 +117,7 @@ function Main() {
         )}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      {loading && <Loading />}
     </main>
   );
 }

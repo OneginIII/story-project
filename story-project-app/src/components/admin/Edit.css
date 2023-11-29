@@ -44,7 +44,7 @@
   background-color: var(--color-background);
   border: 1px solid var(--color-border);
   box-shadow: 0 0.5em 1em #0006;
-  top: -6em;
+  top: -8em;
   left: calc(50% - 10em);
   right: 50%;
   margin-left: auto;
@@ -58,7 +58,7 @@
 
 @keyframes slide {
   0% {
-    top: -6em;
+    top: -8em;
   }
   10% {
     top: 3em;
@@ -67,7 +67,7 @@
     top: 3em;
   }
   100% {
-    top: -6em;
+    top: -8em;
   }
 }
 
@@ -89,4 +89,9 @@
   margin: 0;
   font-size: calc(var(--text-size) * 0.8);
   opacity: 0.5;
+}
+
+.edit input:user-invalid {
+  border: 2px solid #E63333;
+  border-radius: 2px;
 }

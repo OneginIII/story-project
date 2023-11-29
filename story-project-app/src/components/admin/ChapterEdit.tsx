@@ -9,6 +9,7 @@ import { IChapter, IStory } from "../../types";
 import adminService from "../../adminService";
 import NotFound from "../../NotFound";
 import EditNotification from "./EditNotification";
+import Loading from "../Loading";
 
 function ChapterEdit(props: { id: string; new?: boolean }) {
   const navigate = useNavigate();
@@ -36,29 +37,35 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
   const [showNotification, setShowNotification] = useState(false);
   const [createDate, setCreateDate] = useState("");
   const [editDate, setEditDate] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setCurrentChapter(Number(chapter) ? Number(chapter) - 1 : 0);
     if (!props.new) {
+      setLoading(true);
       storyService.getStory(props.id).then((serverStory) => {
         setStoryData(serverStory);
         if (serverStory.id) {
-          storyService.getChapters(props.id).then((serverChapters) => {
-            setChapterData(serverChapters);
-            if (serverChapters.length > 0) {
-              setEditedTitle(serverChapters[currentChapter].title);
-              setEditedText(serverChapters[currentChapter].text);
-              setTextLength(serverChapters[currentChapter].text.length);
-              setEditedNumber(serverChapters[currentChapter].number);
-              setCreateDate(serverChapters[currentChapter].created_at);
-              setEditDate(serverChapters[currentChapter].modified_at);
-            } else {
-              navigate("../new");
-            }
-          });
+          storyService
+            .getChapters(props.id)
+            .then((serverChapters) => {
+              setChapterData(serverChapters);
+              if (serverChapters.length > 0) {
+                setEditedTitle(serverChapters[currentChapter].title);
+                setEditedText(serverChapters[currentChapter].text);
+                setTextLength(serverChapters[currentChapter].text.length);
+                setEditedNumber(serverChapters[currentChapter].number);
+                setCreateDate(serverChapters[currentChapter].created_at);
+                setEditDate(serverChapters[currentChapter].modified_at);
+              } else {
+                navigate("../new");
+              }
+            })
+            .finally(() => setLoading(false));
         }
       });
     } else {
+      setLoading(false);
       setEditedTitle("");
       setEditedText("");
       setTextLength(0);
@@ -86,7 +93,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
   };
 
   const handleStoryEdit = () => {
-    navigate(`/admin/edit/${storyData.url}`);
+    navigate(`/admin/edit/${storyData?.url}`);
   };
 
   const handleEdit = (event: FormEvent) => {
@@ -119,7 +126,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
   const handleCreate = (event: FormEvent) => {
     event.preventDefault();
     adminService
-      .createChapter(storyData.id, {
+      .createChapter(storyData?.id, {
         id: "",
         title: editedTitle,
         text: editedText,
@@ -130,12 +137,14 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
       });
   };
 
-  if (
-    !storyData ||
-    (!props.new && !chapterData[currentChapter]) ||
-    isStringChapter
-  ) {
-    return <NotFound />;
+  if (!loading) {
+    if (
+      !storyData ||
+      (!props.new && !chapterData[currentChapter]) ||
+      isStringChapter
+    ) {
+      return <NotFound />;
+    }
   }
 
   return (
@@ -149,7 +158,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
             alignItems: "center",
           }}
         >
-          <h2>{storyData.title}</h2>
+          <h2>{storyData?.title}</h2>
           <button onClick={handleStoryEdit}>Edit story</button>
         </div>
         <h2>Edit chapter</h2>
@@ -228,10 +237,20 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
             />
           </>
         )}
-        <div className="date-info">
-          <p>Created: {new Date(createDate).toLocaleString("fi-FI")}</p>
-          <p>Last Modified: {new Date(editDate).toLocaleString("fi-FI")}</p>
-        </div>
+        {!props.new && (
+          <div className="date-info">
+            <p>
+              {createDate
+                ? "Created: " + new Date(createDate).toLocaleString("fi-FI")
+                : "loading..."}
+            </p>
+            <p>
+              {editDate
+                ? "Last Modified: " + new Date(editDate).toLocaleString("fi-FI")
+                : "loading..."}
+            </p>
+          </div>
+        )}
         <div className="horizontal-buttons">
           {!props.new && (
             <button
@@ -260,6 +279,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
         message="Chapter edited successfully"
         show={showNotification}
       />
+      {loading && <Loading />}
     </>
   );
 }

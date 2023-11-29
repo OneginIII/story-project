@@ -7,6 +7,7 @@ import { IStory } from "../../types";
 import adminService from "../../adminService";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import Loading from "../Loading";
 
 function StoryEdit(props: {
   id: string;
@@ -16,10 +17,10 @@ function StoryEdit(props: {
 }) {
   const navigate = useNavigate();
   const [showDelete, setShowDelete] = useState(false);
-  const [newTitle, setNewTitle] = useState("");
+  const [newTitle, setNewTitle] = useState("Loading...");
   const [newIcon, setNewIcon] = useState<File>();
   const [uploadMessage, setUploadMessage] = useState("");
-  const [newUrl, setNewUrl] = useState("");
+  const [newUrl, setNewUrl] = useState("Loading...");
   const [newVisibility, setNewVisibility] = useState(false);
   const [storyData, setStoryData] = useState<IStory>({
     title: "",
@@ -34,18 +35,24 @@ function StoryEdit(props: {
   const [deleteIcon, setDeleteIcon] = useState(false);
   const [createDate, setCreateDate] = useState("");
   const [editDate, setEditDate] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!props.new) {
-      storyService.getStory(props.id).then((serverStory) => {
-        setStoryData(serverStory);
-        setNewTitle(serverStory.title);
-        setNewUrl(serverStory.url);
-        setNewVisibility(serverStory.visible);
-        setCreateDate(serverStory.created_at);
-        setEditDate(serverStory.modified_at);
-      });
+      setLoading(true);
+      storyService
+        .getStory(props.id)
+        .then((serverStory) => {
+          setStoryData(serverStory);
+          setNewTitle(serverStory.title);
+          setNewUrl(serverStory.url);
+          setNewVisibility(serverStory.visible);
+          setCreateDate(serverStory.created_at);
+          setEditDate(serverStory.modified_at);
+        })
+        .finally(() => setLoading(false));
     } else {
+      setLoading(false);
       setNewTitle("");
       setNewIcon(undefined);
       setNewUrl("");
@@ -217,18 +224,20 @@ function StoryEdit(props: {
             style={{ width: "max-content" }}
           />
         </div>
-        <div className="date-info">
-          <p>
-            {createDate
-              ? "Created: " + new Date(createDate).toLocaleString("fi-FI")
-              : "loading..."}
-          </p>
-          <p>
-            {editDate
-              ? "Last Modified: " + new Date(editDate).toLocaleString("fi-FI")
-              : "loading..."}
-          </p>
-        </div>
+        {!props.new && (
+          <div className="date-info">
+            <p>
+              {createDate
+                ? "Created: " + new Date(createDate).toLocaleString("fi-FI")
+                : "loading..."}
+            </p>
+            <p>
+              {editDate
+                ? "Last Modified: " + new Date(editDate).toLocaleString("fi-FI")
+                : "loading..."}
+            </p>
+          </div>
+        )}
         <div className="horizontal-buttons">
           {!props.new && (
             <>
@@ -256,6 +265,7 @@ function StoryEdit(props: {
           onClose={() => setShowDelete(false)}
         />
       </Modal>
+      {loading && <Loading />}
     </>
   );
 }
