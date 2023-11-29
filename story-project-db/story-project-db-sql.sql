@@ -2,7 +2,7 @@ CREATE TABLE "users" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid()  ,
   "username" text,
   "password" varchar,
-  "created_at" timestamp
+  "created_at" timestamptz
 );
 
 CREATE TABLE "stories" (
@@ -12,18 +12,18 @@ CREATE TABLE "stories" (
   "icon" text,
   "url" varchar UNIQUE,
   "visible" boolean,
-  "created_at" timestamp,
-  "modified_at" timestamp
+  "created_at" timestamptz,
+  "modified_at" timestamptz
 );
 
 CREATE TABLE "chapters" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   "story_id" uuid,
-  "number" serial,
+  "number" smallint,
   "title" text,
   "text" text,
-  "created_at" timestamp,
-  "modified_at" timestamp
+  "created_at" timestamptz,
+  "modified_at" timestamptz
 );
 
 ALTER TABLE "stories" ADD FOREIGN KEY ("created_by") REFERENCES "users" ("id");
@@ -34,10 +34,10 @@ INSERT INTO users (username, password, created_at)
 VALUES
   ('story-admin', 'story-master', NOW());
   
-INSERT INTO stories (created_by, title, icon, url, visible, created_at, modified_at)
+INSERT INTO stories (created_by, title, url, visible, created_at, modified_at)
 VALUES
   ((SELECT id FROM users WHERE username='story-admin'),
-  'A Night in the Woods', '/icons/night-icon.svg', 'a-night-in-the-woods', true, NOW(), NOW());
+  'A Night in the Woods', 'a-night-in-the-woods', true, NOW(), NOW());
 
 INSERT INTO chapters (story_id, number, title, text, created_at, modified_at)
 VALUES

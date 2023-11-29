@@ -14,6 +14,7 @@ export interface IAuthContext {
     username: string,
     password: string
   ) => Promise<unknown[] | undefined>;
+  onVerify: () => void;
 }
 
 export const AuthContext = createContext<null | IAuthContext>(null);
@@ -54,11 +55,22 @@ function AuthProvider(props: { children: React.ReactNode }) {
     localStorage.removeItem("token");
   };
 
+  const handleVerify = async () => {
+    const response = await loginService.verify(
+      typeof token === "string" ? token : ""
+    );
+    if (response instanceof Error) {
+      handleLogout();
+      navigate("/");
+    }
+  };
+
   const value: IAuthContext = {
     token: token,
     onLogin: handleLogin,
     onLogout: handleLogout,
     onRegister: handleRegister,
+    onVerify: handleVerify,
   };
 
   return (

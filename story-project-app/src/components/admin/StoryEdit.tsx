@@ -7,6 +7,7 @@ import { IStory } from "../../types";
 import adminService from "../../adminService";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import Loading from "../Loading";
 
 function StoryEdit(props: {
   id: string;
@@ -16,32 +17,42 @@ function StoryEdit(props: {
 }) {
   const navigate = useNavigate();
   const [showDelete, setShowDelete] = useState(false);
-  const [newTitle, setNewTitle] = useState("");
+  const [newTitle, setNewTitle] = useState("Loading...");
   const [newIcon, setNewIcon] = useState<File>();
   const [uploadMessage, setUploadMessage] = useState("");
-  const [newUrl, setNewUrl] = useState("");
+  const [newUrl, setNewUrl] = useState("Loading...");
   const [newVisibility, setNewVisibility] = useState(false);
   const [storyData, setStoryData] = useState<IStory>({
     title: "",
-    created_at: "",
     icon: "",
     id: "",
     url: "",
     visible: false,
-    modified_at: "",
     created_by: "",
+    modified_at: "",
+    created_at: "",
   });
   const [deleteIcon, setDeleteIcon] = useState(false);
+  const [createDate, setCreateDate] = useState("");
+  const [editDate, setEditDate] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!props.new) {
-      storyService.getStory(props.id).then((serverStory) => {
-        setStoryData(serverStory);
-        setNewTitle(serverStory.title);
-        setNewUrl(serverStory.url);
-        setNewVisibility(serverStory.visible);
-      });
+      setLoading(true);
+      storyService
+        .getStory(props.id)
+        .then((serverStory) => {
+          setStoryData(serverStory);
+          setNewTitle(serverStory.title);
+          setNewUrl(serverStory.url);
+          setNewVisibility(serverStory.visible);
+          setCreateDate(serverStory.created_at);
+          setEditDate(serverStory.modified_at);
+        })
+        .finally(() => setLoading(false));
     } else {
+      setLoading(false);
       setNewTitle("");
       setNewIcon(undefined);
       setNewUrl("");
@@ -59,7 +70,7 @@ function StoryEdit(props: {
       await adminService
         .uploadIcon(id, newIcon)
         .then((response) => {
-          newIconPath = response.data;
+          newIconPath = response?.data;
           setUploadMessage("Upload succesful!");
         })
         .catch((err) => {
@@ -84,8 +95,7 @@ function StoryEdit(props: {
         visible: newVisibility,
       })
       .then((response) => {
-        console.log(response.status);
-        setStoryData(response.data);
+        setStoryData(response?.data);
         navigate(`../${newUrl}`);
         props.refreshStories();
       });
@@ -97,16 +107,15 @@ function StoryEdit(props: {
     adminService
       .createStory({
         title: newTitle,
-        created_at: "",
         icon: await handleIconUpload(newId),
         id: newId,
         url: newUrl,
         visible: newVisibility,
         created_by: "",
+        created_at: "",
         modified_at: "",
       })
-      .then((response) => {
-        console.log(response.status);
+      .then(() => {
         navigate(`../${newUrl}`);
         props.refreshStories();
       });
@@ -114,8 +123,10 @@ function StoryEdit(props: {
 
   const handleDelete = (event: FormEvent) => {
     event.preventDefault();
-    adminService.deleteStory(storyData.id).then((response) => {
-      console.log(response.status);
+    if (storyData.icon) {
+      adminService.deleteIcon(storyData.icon);
+    }
+    adminService.deleteStory(storyData.id).then(() => {
       navigate(`../`);
       props.refreshStories();
     });
@@ -129,16 +140,23 @@ function StoryEdit(props: {
         encType="multipart/form-data"
       >
         <h2>{props.new ? "Create story" : "Edit story"}</h2>
-        <label htmlFor="title">Title</label>
+        <label htmlFor="title">
+          Title
+          <span className="help-text">(max 100 characters long)</span>
+        </label>
         <input
           type="text"
           name="title"
           id="title"
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
+          required
+          maxLength={100}
         />
         <div style={{ marginBottom: "0" }}>
-          <label htmlFor="icon">Icon</label>
+          <label htmlFor="icon">
+            Icon <span className="help-text">(.svg files only)</span>
+          </label>
           <div style={{ display: "flex", alignItems: "baseline" }}>
             <input
               type="file"
@@ -177,13 +195,21 @@ function StoryEdit(props: {
             )}
           </div>
         </div>
-        <label htmlFor="url">URL</label>
+        <label htmlFor="url">
+          URL{" "}
+          <span className="help-text">
+            (a-z, 0-9, -, not "new", all lower-case and max 100 characters long)
+          </span>
+        </label>
         <input
           type="text"
           name="url"
           id="url"
           value={newUrl}
           onChange={(e) => setNewUrl(e.target.value)}
+          required
+          pattern="^(?!(new)$)[a-z\-0-9]*$"
+          maxLength={100}
         />
         <div>
           <label htmlFor="visibility" style={{ width: "max-content" }}>
@@ -198,6 +224,20 @@ function StoryEdit(props: {
             style={{ width: "max-content" }}
           />
         </div>
+        {!props.new && (
+          <div className="date-info">
+            <p>
+              {createDate
+                ? "Created: " + new Date(createDate).toLocaleString("fi-FI")
+                : "loading..."}
+            </p>
+            <p>
+              {editDate
+                ? "Last Modified: " + new Date(editDate).toLocaleString("fi-FI")
+                : "loading..."}
+            </p>
+          </div>
+        )}
         <div className="horizontal-buttons">
           {!props.new && (
             <>
@@ -225,6 +265,7 @@ function StoryEdit(props: {
           onClose={() => setShowDelete(false)}
         />
       </Modal>
+      {loading && <Loading />}
     </>
   );
 }

@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import NotFound from "../NotFound";
 import storyService, { serverUrl } from "../storyService";
 import { IChapter, IStory } from "../types";
+import Loading from "./Loading";
 
 function StoryContent(props: { id: string }) {
   const navigate = useNavigate();
@@ -22,14 +23,19 @@ function StoryContent(props: { id: string }) {
     modified_at: "",
   });
   const [chapterData, setChapterData] = useState<IChapter[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     storyService.getStory(props.id).then((serverStory) => {
       setStoryData(serverStory);
       if (serverStory.id) {
-        storyService.getChapters(serverStory.id).then((serverChapters) => {
-          setChapterData(serverChapters);
-        });
+        storyService
+          .getChapters(serverStory.id)
+          .then((serverChapters) => {
+            setChapterData(serverChapters);
+          })
+          .finally(() => setLoading(false));
       }
     });
   }, [props.id]);
@@ -61,14 +67,16 @@ function StoryContent(props: { id: string }) {
     }
   };
 
-  if (!chapterData[currentChapter] || isStringChapter) {
-    return <NotFound />;
+  if (!loading) {
+    if (!chapterData[currentChapter] || isStringChapter) {
+      return <NotFound />;
+    }
   }
 
   return (
     <div className="content">
-      {storyData.icon !== "" && currentChapter === 0 && (
-        <img className="content-icon" src={`${serverUrl}/${storyData.icon}`} />
+      {storyData?.icon !== "" && currentChapter === 0 && (
+        <img className="content-icon" src={`${serverUrl}/${storyData?.icon}`} />
       )}
       <h2>{storyData?.title}</h2>
       <div className="chapter-select">
@@ -86,9 +94,9 @@ function StoryContent(props: { id: string }) {
       </div>
       <div className="content-body">
         <h3>
-          Chapter {currentChapter + 1} – {chapterData[currentChapter].title}
+          Chapter {currentChapter + 1} – {chapterData[currentChapter]?.title}
         </h3>
-        <p>{chapterData[currentChapter].text}</p>
+        <p>{chapterData[currentChapter]?.text}</p>
       </div>
       <div className="bottom-chapter-select">
         <div className="chapter-select" style={{ gap: "3em", flex: 1 }}>
@@ -110,6 +118,7 @@ function StoryContent(props: { id: string }) {
           )}
         </div>
       </div>
+      {loading && <Loading />}
     </div>
   );
 }

@@ -1,0 +1,43 @@
+.loading {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  left: calc(50% - 6em);
+  top: calc(50% - 6em);
+  width: 12em;
+  height: 12em;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 0.5em 1em #0006;
+  pointer-events: none;
+}
+
+.loading p {
+  margin-top: 0.25em;
+  font-size: calc(var(--text-size) * 1.25);
+}
+
+.loading svg {
+  filter: drop-shadow(0 0 1em var(--color-text));
+  animation-duration: 1s;
+  animation-name: blink;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+    transform: scale(1.0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.0);
+  }
+}

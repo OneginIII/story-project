@@ -18,7 +18,7 @@ const getStory = async (id: string) => {
 
 const getChapters = async (story_id: string) => {
   console.log(`Getting chapters for story id ${story_id}.`);
-  const result = await executeQuery(queries.geChapters, [story_id]);
+  const result = await executeQuery(queries.getChapters, [story_id]);
   console.log(`Found ${result.rows.length} chapters.`);
   return result;
 };
@@ -43,9 +43,19 @@ const updateStory = async (
   return result;
 };
 
-const updateChapter = async (id: string, title: string, text: string) => {
+const updateChapter = async (
+  id: string,
+  title: string,
+  text: string,
+  number: number
+) => {
   console.log(`Updating chapter id ${id}.`);
-  const result = await executeQuery(queries.updateChapter, [id, title, text]);
+  const result = await executeQuery(queries.updateChapter, [
+    id,
+    title,
+    text,
+    number,
+  ]);
   console.log(`Chapter id ${id} updated successfully`);
   return result;
 };
@@ -70,12 +80,18 @@ const createStory = async (
   return result;
 };
 
-const createChapter = async (story_id: string, title: string, text: string) => {
+const createChapter = async (
+  story_id: string,
+  title: string,
+  text: string,
+  number: number
+) => {
   console.log(`Creating chapter ${title} to story id ${story_id}.`);
   const result = await executeQuery(queries.createChapter, [
     story_id,
     title,
     text,
+    number,
   ]);
   console.log(
     `Chapter ${title} was succesfully added to story id ${story_id}.`

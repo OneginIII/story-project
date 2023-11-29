@@ -8,6 +8,8 @@ import storyService from "../../storyService";
 import { IChapter, IStory } from "../../types";
 import adminService from "../../adminService";
 import NotFound from "../../NotFound";
+import EditNotification from "./EditNotification";
+import Loading from "../Loading";
 
 function ChapterEdit(props: { id: string; new?: boolean }) {
   const navigate = useNavigate();
@@ -28,37 +30,59 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
     modified_at: "",
     created_by: "",
   });
-  const [editedTitle, setEditedTitle] = useState(
-    chapterData[currentChapter] ? chapterData[currentChapter].title : ""
-  );
-  const [editedText, setEditedText] = useState(
-    chapterData[currentChapter] ? chapterData[currentChapter].text : ""
-  );
+  const [editedTitle, setEditedTitle] = useState("Loading...");
+  const [editedText, setEditedText] = useState("Loading...");
+  const [editedNumber, setEditedNumber] = useState(1);
+  const [textLength, setTextLength] = useState(0);
+  const [showNotification, setShowNotification] = useState(false);
+  const [createDate, setCreateDate] = useState("");
+  const [editDate, setEditDate] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setCurrentChapter(Number(chapter) ? Number(chapter) - 1 : 0);
     if (!props.new) {
+      setLoading(true);
       storyService.getStory(props.id).then((serverStory) => {
         setStoryData(serverStory);
         if (serverStory.id) {
-          storyService.getChapters(props.id).then((serverChapters) => {
-            setChapterData(serverChapters);
-            if (serverChapters.length > 0) {
-              setEditedTitle(serverChapters[currentChapter].title);
-              setEditedText(serverChapters[currentChapter].text);
-            } else {
-              navigate("../new");
-            }
-          });
+          storyService
+            .getChapters(props.id)
+            .then((serverChapters) => {
+              setChapterData(serverChapters);
+              if (serverChapters.length > 0) {
+                setEditedTitle(serverChapters[currentChapter].title);
+                setEditedText(serverChapters[currentChapter].text);
+                setTextLength(serverChapters[currentChapter].text.length);
+                setEditedNumber(serverChapters[currentChapter].number);
+                setCreateDate(serverChapters[currentChapter].created_at);
+                setEditDate(serverChapters[currentChapter].modified_at);
+              } else {
+                navigate("../new");
+              }
+            })
+            .finally(() => setLoading(false));
         }
       });
     } else {
+      setLoading(false);
       setEditedTitle("");
       setEditedText("");
+      setTextLength(0);
+      setEditedNumber(1);
+      setCreateDate("");
+      setEditDate("");
     }
   }, [props.id, props.new, navigate, currentChapter, chapter]);
 
+  useEffect(() => {
+    setShowNotification(false);
+  }, [showNotification]);
+
   const handleSetCurrentChapter = (val: number, empty?: boolean) => {
+    if (chapterData.length < 1) {
+      navigate(`../new`);
+    }
     if (chapterData[val]) {
       setCurrentChapter(val);
       navigate(`../` + String(val + 1));
@@ -69,7 +93,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
   };
 
   const handleStoryEdit = () => {
-    navigate(`/admin/edit/${storyData.url}`);
+    navigate(`/admin/edit/${storyData?.url}`);
   };
 
   const handleEdit = (event: FormEvent) => {
@@ -79,48 +103,48 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
         id: "",
         title: editedTitle,
         text: editedText,
+        number: editedNumber,
       })
-      .then((response) => {
-        console.log(response.status);
+      .then(() => {
         handleSetCurrentChapter(currentChapter);
+        setShowNotification(true);
       });
   };
 
   const handleDelete = (event: FormEvent) => {
     event.preventDefault();
     setShowDelete(false);
-    adminService
-      .deleteChapter(chapterData[currentChapter].id)
-      .then((response) => {
-        console.log(response.status);
-        handleSetCurrentChapter(
-          Math.max(currentChapter - 1, 0),
-          // This is a hack to fix the refresh on chapter delete 0 fix
-          currentChapter === 0 && chapter !== undefined
-        );
-      });
+    adminService.deleteChapter(chapterData[currentChapter].id).then(() => {
+      handleSetCurrentChapter(
+        Math.max(currentChapter - 1, 0),
+        // This is a hack to fix the refresh on chapter delete 0 fix
+        currentChapter === 0 && chapter !== undefined
+      );
+    });
   };
 
   const handleCreate = (event: FormEvent) => {
     event.preventDefault();
     adminService
-      .createChapter(storyData.id, {
+      .createChapter(storyData?.id, {
         id: "",
         title: editedTitle,
         text: editedText,
+        number: chapterData.length + 1,
       })
-      .then((response) => {
-        console.log(response.status);
+      .then(() => {
         navigate("../" + (chapterData.length + 1));
       });
   };
 
-  if (
-    !storyData ||
-    (!props.new && !chapterData[currentChapter]) ||
-    isStringChapter
-  ) {
-    return <NotFound />;
+  if (!loading) {
+    if (
+      !storyData ||
+      (!props.new && !chapterData[currentChapter]) ||
+      isStringChapter
+    ) {
+      return <NotFound />;
+    }
   }
 
   return (
@@ -134,7 +158,7 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
             alignItems: "center",
           }}
         >
-          <h2>{storyData.title}</h2>
+          <h2>{storyData?.title}</h2>
           <button onClick={handleStoryEdit}>Edit story</button>
         </div>
         <h2>Edit chapter</h2>
@@ -157,21 +181,76 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
             targetChapter={currentChapter}
           />
         </div>
-        <label htmlFor="title">Title</label>
+        <label htmlFor="title">
+          Title
+          <span className="help-text">(max 100 characters long)</span>
+        </label>
         <input
           type="text"
           id="title"
           value={editedTitle}
           style={{ width: "90%" }}
           onChange={(e) => setEditedTitle(e.target.value)}
+          required
+          maxLength={100}
         />
-        <label htmlFor="chapter-text">Chapter text</label>
-        <br />
+        <label
+          style={{ display: "flex", marginBottom: "0" }}
+          htmlFor="chapter-text"
+        >
+          Chapter text
+          <span className="help-text">
+            (max {(10000).toLocaleString()} characters long)
+          </span>
+          <span style={{ marginLeft: "auto" }}>
+            {textLength.toLocaleString()} / {(10000).toLocaleString()}
+          </span>
+        </label>
         <textarea
           id="chapter-text"
           value={editedText}
-          onChange={(e) => setEditedText(e.target.value)}
+          onChange={(e) => {
+            setEditedText(e.target.value);
+            setTextLength(e.target.value.length);
+          }}
+          required
+          maxLength={10000}
         ></textarea>
+        {!props.new && (
+          <>
+            <label htmlFor="chapter-number">
+              Chapter number
+              <span className="help-text">
+                (number used to sort chapters)
+                <span className="help-warning">
+                  {" "}
+                  Experimental, changes sorting on this page too!
+                </span>
+              </span>
+            </label>
+            <input
+              style={{ maxWidth: "6em" }}
+              id="chapter-number"
+              type="number"
+              value={editedNumber}
+              onChange={(e) => setEditedNumber(Number(e.target.value))}
+            />
+          </>
+        )}
+        {!props.new && (
+          <div className="date-info">
+            <p>
+              {createDate
+                ? "Created: " + new Date(createDate).toLocaleString("fi-FI")
+                : "loading..."}
+            </p>
+            <p>
+              {editDate
+                ? "Last Modified: " + new Date(editDate).toLocaleString("fi-FI")
+                : "loading..."}
+            </p>
+          </div>
+        )}
         <div className="horizontal-buttons">
           {!props.new && (
             <button
@@ -196,6 +275,11 @@ function ChapterEdit(props: { id: string; new?: boolean }) {
           onClose={() => setShowDelete(false)}
         />
       </Modal>
+      <EditNotification
+        message="Chapter edited successfully"
+        show={showNotification}
+      />
+      {loading && <Loading />}
     </>
   );
 }
