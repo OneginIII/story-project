@@ -6,12 +6,13 @@
   height: 2em;
   background-color: var(--color-chapter-background);
   color: var(--color-chapter-text);
-  font-size: 20pt;
+  font-size: calc(var(--text-size) * 1.5 - var(--font-add-size));
   font-weight: bold;
   border-radius: 50%;
   transition: background-color 0.2s,
   color 0.2s;
   user-select: none;
+  padding-top: var(--font-add-size);
 }
 
 .selected-chapter {
