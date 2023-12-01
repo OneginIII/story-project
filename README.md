@@ -15,6 +15,15 @@ A web app for an editable library of stories. This is a personal learning projec
   - `db` - The PostgreSQL database.
   - `adminer` - Used for database management.
 
+## Running the project
+
+Requires Docker.
+
+1. Clone git repository.
+2. Rename `.env.example` files to `.env`.
+3. `docker compose up` in root directory.
+4. Once all containers are running in Docker, go to http://localhost:4000.
+
 ## Project status
 
 This project is now done in terms of the primary functionality. The app's current features work (as far as I've tested) and the interface is simple, but very usable. Some work would need to still be made to deploy the app.
