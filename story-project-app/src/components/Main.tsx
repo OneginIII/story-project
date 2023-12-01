@@ -117,7 +117,9 @@ function Main() {
         )}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      {loading && <Loading />}
+      {loading && document.getElementsByClassName("loading").length < 1 && (
+        <Loading />
+      )}
     </main>
   );
 }

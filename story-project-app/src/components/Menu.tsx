@@ -16,7 +16,7 @@ function Menu() {
     <div className="menu">
       {pages.map((page) => (
         <NavLink
-          to={`/${page.toLowerCase()}/`}
+          to={`/${page.toLowerCase()}`}
           key={page}
           className={"box box-button"}
         >
@@ -24,7 +24,7 @@ function Menu() {
         </NavLink>
       ))}
       <NavLink
-        to={"/settings/"}
+        to={"/settings"}
         className={"box box-button"}
         style={{ flex: "0 1", padding: "0.75em" }}
       >
