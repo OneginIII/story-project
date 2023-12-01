@@ -13,12 +13,13 @@ function Library(props: { stories: IStory[] }) {
       {admin && (
         <Link
           style={{ fontStyle: "italic" }}
-          to={"new"}
+          to={"/admin/new"}
           className={
             window.location.href.includes("admin/new")
               ? "story box-button active"
               : "story box-button"
           }
+          relative="path"
         >
           + Add New Story
         </Link>
@@ -27,13 +28,14 @@ function Library(props: { stories: IStory[] }) {
         if (admin || story.visible) {
           return (
             <NavLink
-              to={`${story.url}/`}
+              to={admin ? `/admin/${story.url}` : `/${story.url}`}
               key={story.url}
               className={
                 window.location.href.includes(story.url)
                   ? "story box-button active"
                   : "story box-button"
               }
+              relative="path"
             >
               <div
                 className="story-icon-bg"
