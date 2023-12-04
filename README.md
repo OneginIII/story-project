@@ -22,7 +22,11 @@ Requires Docker.
 1. Clone git repository.
 2. Rename `.env.example` files to `.env`.
 3. `docker compose up` in root directory.
-4. Once all containers are running in Docker, go to http://localhost:4000.
+4. Once the Docker Postgres and Adminer images are running, go to http://localhost/8080.
+5. Login using the credentials from your `.env` file.
+6. Create a new database called `story-db`.
+7. Execute the .sql file's contents from `story-project-db` in the database through Adminer.
+8. Once all containers are running in Docker, go to http://localhost:4000.
 
 ## Project status
 
