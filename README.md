@@ -2,6 +2,9 @@
 
 A web app for an editable library of stories. This is a personal learning project.
 
+## Screenshot
+![FFASFoyU3n](https://github.com/OneginIII/story-project/assets/37181529/62e2f41e-bc35-4d6a-b7bb-700bc866a8a0)
+
 ## Project contents
 
 - **`story-project-app`** App web interface created with Vite, React & TypeScript.
