@@ -3,7 +3,7 @@
 A web app for an editable library of stories. This is a personal learning project.
 
 ## Screenshot
-![FFASFoyU3n](https://github.com/OneginIII/story-project/assets/37181529/62e2f41e-bc35-4d6a-b7bb-700bc866a8a0)
+![chrome_rNFgHWrCft](https://github.com/OneginIII/story-project/assets/37181529/d70e9aea-5350-4298-b4d5-26a21abc2824)
 
 ## Project contents
 
